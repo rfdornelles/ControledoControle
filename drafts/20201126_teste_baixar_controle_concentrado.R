@@ -14,8 +14,10 @@ library(magrittr)
 
 url_stf_distribuidos <- "http://www.stf.jus.br/arquivo/cms/publicacaoBOInternet/anexo/estatistica/ControleConcentradoGeral/Lista_Autuados.xlsx"
 
-r_stf_distribuidos <- httr::GET(url_stf_distribuidos, httr::progress(),
-                                httr::write_disk("TesteSTF.xlsx"), TRUE)
+r_stf_distribuidos <- httr::GET(url_stf_distribuidos,
+                                httr::progress(),
+                                httr::write_disk("TesteSTF.xlsx",
+                                                 overwrite = T))
 
 base_distribuidos <- readxl::read_excel("TesteSTF.xlsx", skip = 6,
                                         guess_max = 10000) %>%

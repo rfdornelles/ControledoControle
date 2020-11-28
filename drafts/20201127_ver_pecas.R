@@ -15,7 +15,7 @@ query_pecas <- list("seqobjetoincidente" = incidente)
 
 r_pecas <- httr::GET(url = url_pecas,
                      query = query_pecas,
-                     httr::write_disk("Teste-pegar-peca.html"),
+                     httr::write_disk("Teste-pegar-peca.html", T),
                      httr::progress())
 
 httr::BROWSE("Teste-pegar-peca.html")
@@ -34,7 +34,7 @@ link_petinicial <- r_pecas %>%
 
 
 r_petinicial <- httr::GET(url = link_petinicial,
-                          httr::write_disk("teste-inicial.pdf"),
+                          httr::write_disk("teste-inicial.pdf", T),
                           httr::progress())
 
 # Tidy -------------------------------------------------------------------------

@@ -16,7 +16,7 @@ q_stf_listar <- list("classe" = classe,
 
 r_stf_listar <- httr::GET(u_stf_listar,
                           query = q_stf_listar,
-                          httr::write_disk("Teste_listar_ADPF.html"))
+                          httr::write_disk("Teste_listar_ADPF.html", T))
 
 # identificar o incidente, vou precisar pra tudo
 
