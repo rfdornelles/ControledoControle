@@ -5,6 +5,11 @@
 ## Funções auxiliares para baixar e importar a lista de processos de controle
 # concentrado do STF
 
+## Nessa primeira fase são criadas as funções:
+
+# baixar_tabela_stf
+# ler_tabela_stf
+
 library(magrittr)
 
 ##### Função baixar_tabela_stf #####
@@ -64,13 +69,17 @@ if(naMarra == FALSE & fs::file_exists(arquivo_baixado)) {
 
 ##### Função ler_tabela_stf #####
 
-## ler o arquivo baixado
+## ler o arquivo baixado e deixando de um jeito tidy
+# vai baixar por padrão o arquivo mais recente da planilha, podendo ser
+# especificada uma data
 
 ler_tabela_stf <- function(data = "mais_recente") {
 
+# verificar qual é o arquivo mais novo
   if(data == "mais_recente") {
 
-    arquivo <- fs::dir_info("data-raw/planilha-stf/") %>%
+    data <- fs::dir_info("data-raw/planilha-stf/",
+                            regexp = "[.]xlsx$") %>%
       dplyr::select(path) %>%
       dplyr::mutate(
         path = stringr::str_extract(
@@ -79,18 +88,20 @@ ler_tabela_stf <- function(data = "mais_recente") {
       head(1)
   }
 
+# montar o arquivo mais recente
+arquivo <- paste0("data-raw/planilha-stf/ListaAutuados-", data, ".xlsx")
 
-arquivo <- paste0("data-raw/planilha-stf/", data, ".xlsx")
-
+# verificar se o arquivo existe
 if(!fs::file_exists(arquivo)) {
   warning(paste("Arquivo", arquivo, "não existe."))
   return(FALSE)
 }
 
-
+# ler o arquivo
 base_distribuidos <- readxl::read_excel(arquivo, skip = 6,
                                         guess_max = 10000)
 
+# limpar nomes e tirar colunas inúteis
 
 base_distribuidos <- base_distribuidos %>%
   janitor::remove_empty(which = "cols") %>%
@@ -100,10 +111,14 @@ base_distribuidos <- base_distribuidos %>%
                 "polo_ativo" = partes_polos_ativos,
                 "polo_passivo" = partes_polos_passivos)
 
+# continuar a limpeza das colunas tirando as colunas inúteis e
+# fazer a separação da data e dos assuntos
+# Isso tornará mais fácil a manipulação
 
 base_distribuidos <- base_distribuidos %>%
   dplyr::select(-link_processo, -orgao_origem, -indicador_de_processo_em_tramitacao,
-                -meio_processo) %>%
+                -meio_processo, -data_do_ultimo_andamento,
+                -ultimo_andamento) %>%
   dplyr::mutate(ano = lubridate::year(autuacao),
                 mes = lubridate::month(autuacao),
                 dia = lubridate::day(autuacao)) %>%
@@ -114,6 +129,7 @@ base_distribuidos <- base_distribuidos %>%
                   remove = FALSE,
                   extra = "merge")
 
+# retornar a base para uso em outra função
 base_distribuidos
 
 }
