@@ -24,7 +24,7 @@ if(file.exists(caminho_pet) & naMarra == F) {
 
   # preparar a querry
 
-  query_pecas <- list("seqobjetoincidente" = incidente)
+query_pecas <- list("seqobjetoincidente" = incidente)
 
 # url do visualizador
 
@@ -35,8 +35,21 @@ url_pecas <- "http://redir.stf.jus.br/estfvisualizadorpub/jsp/consultarprocessoe
 link_petinicial <- httr::GET(url = url_pecas,
                              query = query_pecas) %>%
   xml2::read_html() %>%
-  xml2::xml_find_first("//a[contains(text(), 'inicial')]") %>%
+  xml2::xml_find_first("//a[contains(text(), 'nicial')]") %>%
   xml2::xml_attr("href")
+
+# em caso de erro, pegar o primeiro item
+
+if(is.na(link_petinicial)) {
+
+  link_petinicial <- httr::GET(url = url_pecas,
+                               query = query_pecas) %>%
+    xml2::read_html() %>%
+    xml2::xml_find_first("//a[@onclick = 'atribuirLink(this);']") %>%
+    xml2::xml_attr("href")
+
+warning(paste("O incidente", incidente, "retornou erro e buscamos a primeira petição"))
+}
 
 # baixar petição inicial
 
@@ -53,7 +66,8 @@ progressr::handlers(list(
   ),
   progressr::handler_beepr(
     finish   = "wilhelm",
-    interval = 2.0
+    update = 10L,
+    initiate = 2L
   )
 ))
 
@@ -64,10 +78,49 @@ progressr::with_progress({
   base_incidentes %>%
     dplyr::pull(incidente) %>%
     purrr::walk(., .f = ~{
-      purrr::possibly(baixar_pet_inicial, NULL)(incidente = .x, prog = p)
+      purrr::safely(baixar_pet_inicial)(incidente = .x, prog = p)
   })
 
 })
 
 
+### checar qualidade
 
+tabela_erros <- fs::dir_info("data-raw/petinicial/") %>%
+  dplyr::filter(size == 0) %>%
+  dplyr::mutate(incidente = stringr::str_extract(path, "[0-9]+")) %>%
+  dplyr::select(incidente) %>%
+  dplyr::left_join(base_incidentes)
+
+### outra forma de pegar os link
+
+
+# httr::GET(url = url_pecas,
+#           query = query_pecas) %>%
+#   xml2::read_html() %>%
+#   xml2::xml_find_first("//a[contains(text(), 'nicial')]") %>%
+#   xml2::xml_attr("href")
+#
+#
+# link_petinicial <- httr::GET(url = url_pecas,
+#                              query = query_pecas) %>%
+#   xml2::read_html() %>%
+#   xml2::xml_find_first("//a[contains(text(), 'nicial')]") %>%
+#   xml2::xml_attr("href")
+#
+# if(is.na(link_petinicial)) {
+#
+#   link_petinicial <- httr::GET(url = url_pecas,
+#                                query = query_pecas) %>%
+#     xml2::read_html() %>%
+#     xml2::xml_find_first("//a[@onclick = 'atribuirLink(this);']") %>%
+#     xml2::xml_attr("href")
+# }
+#
+# lista_link <- httr::GET(url = url_pecas,
+#                         query = query_pecas) %>%
+#   xml2::read_html() %>%
+#   xml2::xml_find_all("//a[@onclick = 'atribuirLink(this);']") %>%
+#   tibble::tibble(incidente = incidente,
+#                nome = xml2::xml_text("title"),
+#                link = xml2::xml_attr("href"))
