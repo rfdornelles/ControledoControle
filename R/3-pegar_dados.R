@@ -113,38 +113,54 @@ tibble::tibble(tipo = partes_tipo,
 
 }
 
-# # partes
-#
-# u_partes <- "http://portal.stf.jus.br/processos/abaPartes.asp"
-#
-# r_partes <- httr::GET(url = u_partes,
-#                       query = q_incidente)
-#
+
+#### ler_aba_andamentos ####
+# Função para ler a aba de andamentos e retornar um formato tidy
+# Vai receber o incidente e retornar uma tibble
+
+ler_aba_andamento <- function (incidente, dormir = 1, naMarra = F, prog) {
+
+ # barra de progresso, para quando for iterar
+  if (!missing(prog)) {
+    prog()
+  }
+
+ # sleep para não causar
+  Sys.sleep(dormir)
 
 
-#
-# # andamentos
-#
-# u_andamentos <- "http://portal.stf.jus.br/processos/abaAndamentos.asp"
-#
-# r_andamentos <- httr::GET(url = u_andamentos,
-#                           query = q_incidente)
-#
-#
-# ####
-#
-#
-#
-#
-# ### teste
-#
-# progressr::with_progress({
-#
-#   p <- progressr::progressor(nrow(base_incidentes))
-#
-#   base_incidentes %>%
-#     dplyr::pull(incidente) %>%
-#     purrr::walk(., .f = baixar_dados_processo, dormir = 1, prog = p)
-#
-# })
+# caminho do possível arquivo
+caminho_andamentos <- paste0("data-raw/andamentos/Andamentos-", incidente,
+                               ".html")
 
+  # verificar se existe o arquivo:
+
+  if(!fs::file_exists(caminho_andamentos)) {
+    message(paste("Arquivo inexistente - Andamentos do incidente", incidente))
+    return()
+  }
+
+# leitura propriamente dita
+
+# carregar a página com o encode correto
+pagina_andamento <- caminho_andamentos %>%
+  xml2::read_html(encoding = "UTF-8")
+
+# ler a data
+datas <- pagina_andamento %>%
+  xml2::xml_find_all("//*[contains(@class, 'andamento-data')]") %>%
+  xml2::xml_text() %>%
+  lubridate::dmy()
+
+# ler o "título" de cada andamento
+nome_andamento <- pagina_andamento %>%
+  xml2::xml_find_all("//*[contains(@class, 'andamento-nome')]") %>%
+  xml2::xml_text() %>%
+  stringr::str_squish()
+
+
+# retornar o tibble
+tibble::tibble(data = datas,
+                 andamento = nome_andamento)
+
+}
