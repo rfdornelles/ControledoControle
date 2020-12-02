@@ -74,11 +74,11 @@ readr::write_rds(base_incidentes, "data/BaseIncidentes.rds")
 
 ### checar qualidade
 
-# tabela_erros <- fs::dir_info("data-raw/petinicial/") %>%
-#   dplyr::filter(size == 0) %>%
-#   dplyr::mutate(incidente = stringr::str_extract(path, "[0-9]+")) %>%
-#   dplyr::select(incidente) %>%
-#   dplyr::left_join(base_incidentes)
+tabela_erros <- fs::dir_info("data-raw/petinicial/") %>%
+  dplyr::filter(size == 0) %>%
+  dplyr::mutate(incidente = stringr::str_extract(path, "[0-9]+")) %>%
+  dplyr::select(incidente) %>%
+  dplyr::left_join(base_incidentes)
 
 # ler petições iniciais
 
