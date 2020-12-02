@@ -64,16 +64,12 @@ baixar_dados_processo <- function (incidente, dormir = 1, naMarra = F, prog) {
 # Função para ler a aba de partes e retornar um formato tidy
 # Vai receber o incidente e retornar uma tibble para ser empilhada
 
-ler_aba_partes <- function (incidente, dormir = 1, naMarra = F, prog) {
+ler_aba_partes <- function (incidente, naMarra = F, prog) {
 
 # barra de progresso, para quando for iterar
   if (!missing(prog)) {
     prog()
   }
-
-# sleep para não causar
-  Sys.sleep(dormir)
-
 
 # caminho do possível arquivo
 caminho_partes <- paste0("data-raw/partes/Partes-", incidente, ".html")
@@ -118,16 +114,12 @@ tibble::tibble(tipo = partes_tipo,
 # Função para ler a aba de andamentos e retornar um formato tidy
 # Vai receber o incidente e retornar uma tibble
 
-ler_aba_andamento <- function (incidente, dormir = 1, naMarra = F, prog) {
+ler_aba_andamento <- function (incidente, naMarra = F, prog) {
 
  # barra de progresso, para quando for iterar
   if (!missing(prog)) {
     prog()
   }
-
- # sleep para não causar
-  Sys.sleep(dormir)
-
 
 # caminho do possível arquivo
 caminho_andamentos <- paste0("data-raw/andamentos/Andamentos-", incidente,
