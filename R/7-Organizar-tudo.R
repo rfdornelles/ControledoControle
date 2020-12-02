@@ -76,10 +76,9 @@ progressr::with_progress({
 ## procurar palavras-chave
 
 tabela_palavras_chave <- tabela_peticoes %>%
-  dplyr::mutate(
-    palavras_chave = retornar_palavras_frequentes(texto_inicial)) %>%
+  dplyr::rowwise() %>%
+  dplyr::mutate(palavra = retornar_palavras_frequentes(texto_inicial)) %>%
   dplyr::select(-texto_inicial)
-
 
 ## salvar
 
