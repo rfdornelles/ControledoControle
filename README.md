@@ -303,6 +303,135 @@ string com seu conteúdo.
 
 ## Produtos da raspagem
 
+Para os fins desse traballho, foram selecionadas todas as ações autuadas
+entre 2016 e 2020 (até 01/12/2020, mais especificamente). Foram salvos
+dados sobre as ações em si (direto do STF), os respectivos números de
+incidente, as partes, os andamentos, e a petição inicial.
+
+Na pasta /data foram salvos arquivos .rds contendo esses dados. São os
+seguintes:
+
+### *a) Base de incidentes*
+
+É a tabela que salva a correspondência entre classe e número
+(informações conhecidas) com a do incidente (informação desconhecida).
+
+    #> # A tibble: 6 x 3
+    #>   classe numero incidente
+    #>   <chr>   <dbl> <chr>    
+    #> 1 ADC        53 5436051  
+    #> 2 ADC        54 5440576  
+    #> 3 ADC        55 5471945  
+    #> 4 ADC        56 5472003  
+    #> 5 ADC        57 5511026  
+    #> 6 ADC        58 5526245
+
+| Coluna      | Descrição                                                  |
+| ----------- | ---------------------------------------------------------- |
+| *classe*    | Classe processual (ADI, ADC, ADO ou ADPF)                  |
+| *numero*    | Número sequencial daquele processo                         |
+| *incidente* | Localizador numérico do processo no sistema interno do STF |
+
+### *b) Base de partes*
+
+Relaciona as partes para todos os processos da base.
+
+Ela está em um formato em que o número do incidente é repetido para cada
+linha. A ideia é seja possível filtrar, agrupar e pivotar e realizar
+join de acordo com a necessidade de cada análise.
+
+    #> # A tibble: 6 x 3
+    #>   incidente tipo  nome                                                    
+    #>   <chr>     <chr> <chr>                                                   
+    #> 1 5436051   REQTE DIRETÓRIO NACIONAL DO PROGRESSISTAS-PP                  
+    #> 2 5436051   ADV   LISE REIS BATISTA DE ALBUQUERQUE (25998/DF) E OUTRO(A/S)
+    #> 3 5436051   INTDO PRESIDENTE DA REPÚBLICA                                 
+    #> 4 5436051   PROC  ADVOGADO-GERAL DA UNIÃO                                 
+    #> 5 5436051   INTDO CONGRESSO NACIONAL                                      
+    #> 6 5436051   PROC  ADVOGADO-GERAL DA UNIÃO
+
+| Coluna      | Descrição                                                                                         |
+| ----------- | ------------------------------------------------------------------------------------------------- |
+| *incidente* | Localizador numérico do processo no sistema interno do STF                                        |
+| *tipo*      | Que qualidade a parte ocupa no processo (ex. requerente, requerida, advogada, amicus curiar, etc) |
+| *nome*      | Nome da parte                                                                                     |
+
+### *c) Base de andamentos*
+
+Relaciona os andamentos para todos os processos da base.
+
+Assim como a anterior, está em um formato em que o número do incidente é
+repetido para cada linha. A ideia é seja possível filtrar, agrupar e
+pivotar e realizar join de acordo com a necessidade de cada análise.
+
+    #> # A tibble: 6 x 3
+    #>   incidente data       andamento                       
+    #>   <chr>     <date>     <chr>                           
+    #> 1 5436051   2018-09-11 Baixa ao arquivo do STF, Guia nº
+    #> 2 5436051   2018-09-11 Transitado(a) em julgado        
+    #> 3 5436051   2018-08-14 Publicação, DJE                 
+    #> 4 5436051   2018-08-10 Extinto o processo              
+    #> 5 5436051   2018-04-12 Conclusos ao(à) Relator(a)      
+    #> 6 5436051   2018-04-12 Distribuído
+
+| Coluna      | Descrição                                                  |
+| ----------- | ---------------------------------------------------------- |
+| *incidente* | Localizador numérico do processo no sistema interno do STF |
+| *data*      | Data em que ocorreu o andamento                            |
+| *nome*      | Andamento em si                                            |
+
+### *d) Base de andamentos*
+
+Relaciona o inteiro teor das petições para todos os processos da base.
+
+Assim como a anterior, está em um formato em que o número do incidente é
+repetido para cada linha. A ideia é seja possível filtrar, agrupar e
+pivotar e realizar join de acordo com a necessidade de cada análise.
+
+Por ser um texto extenso, é a única que está compactada. Ela também foi
+pré-processada com o pacote `{pdftools}` para que fosse colapsada em
+apenas uma única grande string.
+
+    #> # A tibble: 6 x 2
+    #>   incidente texto_inicial                                                       
+    #>   <chr>     <chr>                                                               
+    #> 1 6012085   "SÉRGIO VICTOR ADVOCACIA EXCELENTÍSSIMO SENHOR MINISTRO LUIZ FUX PR~
+    #> 2 6025884   "EXCELENTÍSSIMO(A) SENHOR(A) MINISTRO PRESIDENTE DO SUPREMO TRIBUNA~
+    #> 3 5337403   "EXCELENTÍSSIMA SENHORA MINISTRA PRESIDENTE DO EGRÉGIO SUPREMO TRIB~
+    #> 4 5340474   "EXCELENTÍSSIMA SENHORA MINISTRA CÁRMEN LÚCIA, PRESIDENTE DO SUPREM~
+    #> 5 5341021   ""                                                                  
+    #> 6 5341622   "EXCELENTÍSSIMA SENHORA PRESIDENTE DO EGRÉGIO SUPREMO TRIBUNAL FEDE~
+
+| Coluna           | Descrição                                                  |
+| ---------------- | ---------------------------------------------------------- |
+| *incidente*      | Localizador numérico do processo no sistema interno do STF |
+| *texto\_inicial* | String colapsada contendo todo o teor da petição inicial   |
+
+### *e) Base de palavras-chave*
+
+Não extraída diretamente do STF, mas decorrente de um pré-processamento
+do texto da petição inicial, ela relaciona as 10 palavras mais
+frequentes em cada petição inicial.
+
+É uma primeira experiência para futura aplicação de técnicas de
+modelagem de texto. Ainda está sujeita a *muitas* melhorias.
+
+    #> # A tibble: 6 x 2
+    #> # Rowwise: 
+    #>   incidente palavra                                                             
+    #>   <chr>     <chr>                                                               
+    #> 1 6012085   "trabalho, periculosidade, cep, adicional, superior, sao, litros, n~
+    #> 2 6025884   "nº, cidadao, constitucional, constituicao, artigo, constitucionali~
+    #> 3 5337403   "transporte, nº, combustiveis, º, estadual, sobre, nacional, uniao,~
+    #> 4 5340474   "procurador, º, anexo, nº, ii, i, cargo, geral, estado, parte"      
+    #> 5 5341021   ""                                                                  
+    #> 6 5341622   "nº, bens, direito, divida, º, ativa, constitucional, ii, fazenda, ~
+
+| Coluna      | Descrição                                                  |
+| ----------- | ---------------------------------------------------------- |
+| *incidente* | Localizador numérico do processo no sistema interno do STF |
+| *palavra*   | Lista das 10 palavras mais frequentes no documento         |
+
 ## algumas análises feitas
 
 ## próximos passos

@@ -134,7 +134,7 @@ Iterando isso para cada um dos processos que desejo, salvo o resultado numa tabe
 
 ```{r exemplo-tbl-incidente, echo=FALSE, message=FALSE, warning=FALSE, paged.print=FALSE}
 
-head(readr::read_rds("data/BaseIncidentes.rds"))
+head(readr::read_rds("data/incidentes.rds"))
 ```
 
 ### *3. Obtenção dos dados do processo*
@@ -202,6 +202,94 @@ ler_pdf_inicial("5833114")
 ```
 
 ## Produtos da raspagem
+
+Para os fins desse traballho, foram selecionadas todas as ações autuadas entre 2016 e 2020 (até 01/12/2020, mais especificamente). Foram salvos dados sobre as ações em si (direto do STF), os respectivos números de incidente, as partes, os andamentos, e a petição inicial.
+
+Na pasta /data foram salvos arquivos .rds contendo esses dados. São os seguintes:
+
+### *a) Base de incidentes*
+
+É a tabela que salva a correspondência entre classe e número (informações conhecidas) com a do incidente (informação desconhecida).
+
+```{r descreve-incidentes, echo=FALSE}
+
+head(readr::read_rds("data/incidentes.rds"))
+```
+
+| Coluna      | Descrição                                                  |
+|-------------|------------------------------------------------------------|
+| *classe*    | Classe processual (ADI, ADC, ADO ou ADPF)                  |
+| *numero*    | Número sequencial daquele processo                         |
+| *incidente* | Localizador numérico do processo no sistema interno do STF |
+
+### *b) Base de partes*
+
+Relaciona as partes para todos os processos da base.
+
+Ela está em um formato em que o número do incidente é repetido para cada linha. A ideia é seja possível filtrar, agrupar e pivotar e realizar join de acordo com a necessidade de cada análise.
+
+```{r descreve-partes, echo=FALSE}
+
+head(readr::read_rds("data/partes.rds"))
+```
+
+| Coluna      | Descrição                                                                                         |
+|-------------|---------------------------------------------------------------------------------------------------|
+| *incidente* | Localizador numérico do processo no sistema interno do STF                                        |
+| *tipo*      | Que qualidade a parte ocupa no processo (ex. requerente, requerida, advogada, amicus curiar, etc) |
+| *nome*      | Nome da parte                                                                                     |
+
+### *c) Base de andamentos*
+
+Relaciona os andamentos para todos os processos da base.
+
+Assim como a anterior, está em um formato em que o número do incidente é repetido para cada linha. A ideia é seja possível filtrar, agrupar e pivotar e realizar join de acordo com a necessidade de cada análise.
+
+```{r descreve-andamentos, echo=FALSE}
+
+head(readr::read_rds("data/andamentos.rds"))
+```
+
+| Coluna      | Descrição                                                                                         |
+|-------------|---------------------------------------------------------------------------------------------------|
+| *incidente* | Localizador numérico do processo no sistema interno do STF                                        |
+| *data*      | Data em que ocorreu o andamento |
+| *nome*      | Andamento em si                       |
+
+
+### *d) Base de andamentos*
+
+Relaciona o inteiro teor das petições para todos os processos da base.
+
+Assim como a anterior, está em um formato em que o número do incidente é repetido para cada linha. A ideia é seja possível filtrar, agrupar e pivotar e realizar join de acordo com a necessidade de cada análise.
+
+Por ser um texto extenso, é a única que está compactada. Ela também foi pré-processada com o pacote `{pdftools}` para que fosse colapsada em apenas uma única grande string.
+
+```{r descreve-peticoes, echo=FALSE}
+
+readr::read_rds("data/peticoes.rds")[21:26,]
+```
+
+| Coluna      | Descrição                                                                                         |
+|-------------|---------------------------------------------------------------------------------------------------|
+| *incidente* | Localizador numérico do processo no sistema interno do STF                                        |
+| *texto_inicial*      | String colapsada contendo todo o teor da petição inicial |
+
+### *e) Base de palavras-chave*
+
+Não extraída diretamente do STF, mas decorrente de um pré-processamento do texto da petição inicial, ela relaciona as 10 palavras mais frequentes em cada petição inicial.
+
+É uma primeira experiência para futura aplicação de técnicas de modelagem de texto. Ainda está sujeita a *muitas* melhorias.
+
+```{r descreve-palavras-chave, echo=FALSE}
+
+readr::read_rds("data/palavras-chave.rds")[21:26,]
+```
+
+| Coluna      | Descrição                                                                                         |
+|-------------|---------------------------------------------------------------------------------------------------|
+| *incidente* | Localizador numérico do processo no sistema interno do STF                                        |
+| *palavra*      | Lista das 10 palavras mais frequentes no documento |
 
 ## algumas análises feitas
 
