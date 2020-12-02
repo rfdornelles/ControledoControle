@@ -104,7 +104,8 @@ partes_nomes <- caminho_partes %>%
 
 
 # retornar o tibble
-tibble::tibble(tipo = partes_tipo,
+tibble::tibble(incidente = incidente,
+               tipo = partes_tipo,
                nome = partes_nomes)
 
 }
@@ -152,7 +153,8 @@ nome_andamento <- pagina_andamento %>%
 
 
 # retornar o tibble
-tibble::tibble(data = datas,
-                 andamento = nome_andamento)
+tibble::tibble(incidente = incidente,
+               data = datas,
+               andamento = nome_andamento)
 
 }
