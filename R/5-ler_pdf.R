@@ -52,16 +52,18 @@ palavras_comuns <- c("art", "lei", "stf", "corte", "pgr", "º",
 # no futuro pode ajudar a fazer modelo de tópicos
 
 retornar_palavras_frequentes <- function(texto, quantidade = 10,
-                                         simplifica = FALSE) {
+                                         simplifica = TRUE) {
 
   # limpar o texto
 
-  texto_limpo <-  texto %>%
-    abjutils::rm_accent() %>% # remover acentsos
-    stringr::str_squish() %>% # Elimina espacos excedentes
+  texto_limpo <- texto %>%
     stringr::str_to_lower() %>% # Converte para minusculo
+    abjutils::rm_accent() %>% # remover acentsos
+    stringr::str_remove_all("[0-9]") %>%
+    stringr::str_squish() %>% # Elimina espacos excedentes
     tibble::tibble("texto" = .) # transforma em tbl
 
+  # remover stopwords e tokenizar
   texto_limpo <- texto_limpo %>%
     tidytext::unnest_tokens(input = texto, output = "token") %>%
     dplyr::anti_join(., y = palavras_comuns,
@@ -73,13 +75,14 @@ retornar_palavras_frequentes <- function(texto, quantidade = 10,
   if(simplifica) {
 
     texto_limpo %>%
-      dplyr::pull(token)
+      dplyr::pull(token) %>%
+      stringr::str_c(collapse = ", ")
 
   } else {
 
     # retornar os termos no formato desejado
     texto_limpo %>%
-      tidyr::nest()
+      tidyr::nest(data = c(token, n))
 
   }
 
