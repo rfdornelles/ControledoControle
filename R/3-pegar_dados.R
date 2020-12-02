@@ -13,7 +13,13 @@ library(magrittr)
 fs::dir_create("data-raw/partes/")
 fs::dir_create("data-raw/andamentos/")
 
-baixar_dados_processo <- function (incidente, dormir = 0, naMarra = F, prog) {
+#### baixar_dados_processo ####
+# Função que recebe o número do incidente e baixa do STF as partes e os
+# andamentos
+
+# Já colocada de forma a facilitar a iteração
+
+baixar_dados_processo <- function (incidente, dormir = 1, naMarra = F, prog) {
 
 # barra de progresso, para quando for iterar
   if (!missing(prog)) {
@@ -54,8 +60,59 @@ baixar_dados_processo <- function (incidente, dormir = 0, naMarra = F, prog) {
 }
 
 
-# ### ler os dados
-#
+#### ler_aba_partes ####
+# Função para ler a aba de partes e retornar um formato tidy
+# Vai receber o incidente e retornar uma tibble para ser empilhada
+
+ler_aba_partes <- function (incidente, dormir = 1, naMarra = F, prog) {
+
+# barra de progresso, para quando for iterar
+  if (!missing(prog)) {
+    prog()
+  }
+
+# sleep para não causar
+  Sys.sleep(dormir)
+
+
+# caminho do possível arquivo
+caminho_partes <- paste0("data-raw/partes/Partes-", incidente, ".html")
+
+# verificar se existe o arquivo:
+
+if(!fs::file_exists(caminho_partes)) {
+  message(paste("Arquivo inexistente - Partes do incidente", incidente))
+  return()
+}
+
+# leitura propriamente dita
+
+# primeiro o "papel" que atua (passivo, ativo, adv, promotor, etc)
+
+partes_tipo <- caminho_partes %>%
+  xml2::read_html(encoding = "UTF-8") %>%
+  xml2::xml_find_all("//div[@class='detalhe-parte']") %>%
+  xml2::xml_text() %>%
+  stringr::str_extract("(?>[A-Z]*)")
+
+# nome propriamente dito
+# num futuro pensar em separar OAB e agrupar advs e procuradores
+# da mesma parte
+
+partes_nomes <- caminho_partes %>%
+  xml2::read_html(encoding = "UTF-8") %>%
+  xml2::xml_find_all("//div[@class='nome-parte']") %>%
+  xml2::xml_text() %>%
+  stringr::str_replace_all("&nbsp", " ") %>%
+  stringr::str_squish()
+
+
+# retornar o tibble
+tibble::tibble(tipo = partes_tipo,
+               nome = partes_nomes)
+
+}
+
 # # partes
 #
 # u_partes <- "http://portal.stf.jus.br/processos/abaPartes.asp"
@@ -63,23 +120,8 @@ baixar_dados_processo <- function (incidente, dormir = 0, naMarra = F, prog) {
 # r_partes <- httr::GET(url = u_partes,
 #                       query = q_incidente)
 #
-# partes_tipo <- r_partes %>%
-#   xml2::read_html() %>%
-#   xml2::xml_find_all("//div[@class='detalhe-parte']") %>%
-#   xml2::xml_text() %>%
-#   stringr::str_extract("(?>[A-Z]*)")
-#
-# partes_nomes <- r_partes %>%
-#   xml2::read_html() %>%
-#   xml2::xml_find_all("//div[@class='nome-parte']") %>%
-#   xml2::xml_text() %>%
-#   stringr::str_replace_all("&nbsp", " ") %>%
-#   stringr::str_squish()
-#
-#
-# partes <- tibble::tibble(tipo = partes_tipo,
-#                          nome = partes_nomes)
-#
+
+
 #
 # # andamentos
 #
