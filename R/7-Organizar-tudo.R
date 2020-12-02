@@ -29,10 +29,8 @@ source("R/5-ler_pdf.R")
 ##### ler os dados
 
 ## listar todos os casos que baixei
-lista_incidentes <- dplyr::full_join(
-  readr::read_rds("data/BaseIncidentes.rds"),
-  readr::read_rds("data/BaseIncidentes2016.rds"))
 
+lista_incidentes <- readr::read_rds("data/incidentes.rds")
 
 ## ler as partes
 progressr::with_progress({

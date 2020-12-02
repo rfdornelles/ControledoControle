@@ -35,7 +35,7 @@ progressr::handlers(list(
 
 # baixar e ler arquivo com a lista
 
-source('C:/Users/Conectas/Desktop/Dropbox/Meu R/Cursos/Curso-r/Web Scrap/Projetos/ControledoControle/R/1-baixar_lista_processos.R', encoding = 'UTF-8')
+source('R/1-baixar_lista_processos.R', encoding = 'UTF-8')
 
 baixar_tabela_stf()
 
@@ -49,7 +49,7 @@ base_casos <- base_casos %>%
 
 # pegar todos os incidentes
 
-source('C:/Users/Conectas/Desktop/Dropbox/Meu R/Cursos/Curso-r/Web Scrap/Projetos/ControledoControle/R/2-pegar_incidentes.R', encoding = 'UTF-8')
+source('R/2-pegar_incidentes.R', encoding = 'UTF-8')
 
 progressr::with_progress({
 
@@ -65,7 +65,7 @@ progressr::with_progress({
 
 # salvar resultado
 
-readr::write_rds(base_incidentes, "data/BaseIncidentes.rds")
+readr::write_rds(base_incidentes, "testes/BaseIncidentes.rds")
 
 source(file = "R/4-baixar_peticiao_inicial.R", encoding = "UTF-8")
 
@@ -82,7 +82,7 @@ progressr::handlers(list(
   )
 ))
 
-base_incidentes <- readr::read_rds("data/BaseIncidentes2016.rds")
+base_incidentes <- readr::read_rds("testes/BaseIncidentes2016.rds")
 
 progressr::with_progress({
 
