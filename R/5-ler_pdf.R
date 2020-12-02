@@ -7,7 +7,7 @@ library(magrittr)
 ## Criar função que lê a inicial já baixada e depois funções para olharmos
 # as palavras chave de cada petição
 
-ler_pdf_inicial <-  function (incidente, dormir = 1, prog) {
+ler_pdf_inicial <-  function (incidente, prog) {
 
 # barra de progresso, se houver
   if (!missing(prog)) {
@@ -22,14 +22,16 @@ caminho_pet <- paste0("data-raw/petinicial/PetInicial-", incidente, ".pdf")
     return()
   }
 
-# sleep para não causar
-Sys.sleep(dormir)
+# carregar pdf
 
   pdf_lido <- pdftools::pdf_text(caminho_pet)
 
+# leitura e retornar tibble
   pdf_lido %>%
     stringr::str_c(collapse = "") %>%
-    stringr::str_squish()
+    stringr::str_squish() %>%
+    tibble::tibble("incidente" = incidente,
+                   "texto_inicial" = .)
 }
 
 #### procurar palavras-chave
@@ -50,7 +52,7 @@ palavras_comuns <- c("art", "lei", "stf", "corte", "pgr", "º",
 # no futuro pode ajudar a fazer modelo de tópicos
 
 retornar_palavras_frequentes <- function(texto, quantidade = 10,
-                                         simplifica = TRUE) {
+                                         simplifica = FALSE) {
 
   # limpar o texto
 
@@ -68,19 +70,20 @@ retornar_palavras_frequentes <- function(texto, quantidade = 10,
     dplyr::slice_head(n = quantidade)
 
   # pra facilitar iteração retornar apenas as palavras
-  if(!simplifica) {
+  if(simplifica) {
 
-    texto_limpo <- texto_limpo %>%
+    texto_limpo %>%
       dplyr::pull(token)
+
+  } else {
+
+    # retornar os termos no formato desejado
+    texto_limpo %>%
+      tidyr::nest()
 
   }
 
-# retornar os termos no formato desejado
-  texto_limpo
-
 }
-
-
 
 
 
