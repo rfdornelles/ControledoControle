@@ -105,21 +105,203 @@ permitindo visualizar documentos, petições e decisões judiciais.
 É através dessas páginas, portanto, que pretendemos navegar e extrair
 dados para as análises futuras.
 
-### fluxo
+## Passos do fluxo do web scraping
 
-achar a lista de processos separar o que quero buscar incidentes
+Vamos explicar brevemente os passos que adotamos para poder realizar a
+raspagem das ações de controle concentrado. Basicamente, os passos
+foram:
 
-numero interno que identifica o processo
+1.  Lista de ações existentes
+2.  Obtenção do número localizador de cada ação (número de incidente)
+3.  Raspagem dos dados de parte
+4.  Raspagem dos andamentos
+5.  Acessar “pasta virtual” do caso
+6.  Localizar a petição inicial
+7.  Baixar o arquivo .pdf
 
-ir em cada página através do incidente buscar as abas de dados,
-detalhes, etc
+Falaremos a seguir mais detalhadamente cada uma delas.
 
-abrir página com visualizador de documentos identificar qual é o
-primeiro
+### *1. Identificar a lista de ações atualmente existentes*
 
-baixar o pdf da inicial
+O primeiro passo foi localizar uma lista de processos das classes
+escolhidas (ADPF, ADC, ADO e ADI) que sejam efetivamente existentes. Uma
+informação importante é que os números das ações no STF são sequenciais,
+por força de seu regimento.
 
-### documentar a tabela
+Isso quer dizer que as ações propostas receberão um número de acordo com
+a ordem de sua propositura: a primeira ação de uma classe (uma ADI, por
+exemplo) será número 1, a segunda número 2 e assim sucessivamente.
+
+Seria possível, então, iniciar a busca pela primeira ação de cada uma
+das classes e iterar indefinidamente até localizar as mais recentes.
+
+Contudo, aproveitou-se o fato de que o Tribunal possui um painel de
+estatística que contem um link para uma tabela em formado .xlsx contendo
+todos os casos distribuídos ou autuados desde 2000.
+
+Optou-se por utilizar a tabela de casos *autuados* pois a distribuição é
+uma fase posterior, que pode levar alguns dias para ocorrer ou, mesmo,
+sequer acontecer.
+
+![](img/relatorio_controle_concentrado.png)
+
+Verificou-se que esse [link era
+estático](http://www.stf.jus.br/arquivo/cms/publicacaoBOInternet/anexo/estatistica/ControleConcentradoGeral/Lista_Autuados.xlsx)
+e, portanto, não seria necessário atualizá-lo com frequência. Assim, foi
+criada uma função que baixa diariamente esse arquivo.
+
+### *2. Localizar o “incidente”*
+
+A tabela de casos disponibilizada pelo Tribunal, embora útil, não contém
+todas as informações que são desejáveis para uma análise mais
+aprofundada. Por isso, não basta saber “quais” são os números das ações:
+é preciso também localizar o código de incidente, que nos leva até a
+página que efetivamente contém os dados.
+
+![](img/inspecionar-incidente.png)
+
+Como esse é um número interno do sistema e, portanto, absolutamente
+arbitrário, é preciso descobri-lo caso a caso.
+
+A melhor forma de fazer isso foi simular uma requisição da seguinte
+forma, criando uma função que recebe como parâmetros a classe e o número
+do processo:
+
+Realizando essa requisição, sou redirecionado para a página com os dados
+do processo, cujo url conterá o número de incidente. Assim, extraio esse
+número da resposta:
+
+Iterando isso para cada um dos processos que desejo, salvo o resultado
+numa tabela auxiliar, salva em .rds para uso futuro:
+
+    #> # A tibble: 6 x 3
+    #>   classe numero incidente
+    #>   <chr>   <dbl> <chr>    
+    #> 1 ADC        53 5436051  
+    #> 2 ADC        54 5440576  
+    #> 3 ADC        55 5471945  
+    #> 4 ADC        56 5472003  
+    #> 5 ADC        57 5511026  
+    #> 6 ADC        58 5526245
+
+### *3. Obtenção dos dados do processo*
+
+Obtido o número de incidente, posso simular uma requisição para obter
+informações.
+
+Observando mais atendamente as requisições, porém, observo que o site
+abre uma série de páginas menores que fazem referência ao número do
+incidente.
+
+![](img/abas-processo.png)
+
+Essas páginas, do tipo XHR, se mostraram muito mais simples de serem
+salvas localmente e raspadas. Por isso, foram elas as utilizadas para
+criar uma função denominada `baixar_dados_processo` que recebe o
+incidente, busca as abas de meu interesse (nesse caso, as relativas a
+partes e andamentos) e as salva em disco caso já não existam.
+
+### *4. Raspagem dos dados de parte*
+
+Após salvar em disco o resultado da requisição para a aba relativa às
+partes, foi criada a função `ler_aba_partes` que, recebendo o número do
+incidente, localiza o arquivo adequado e realiza a leitura.
+
+Como os dados são bem estruturados no arquivo html, conseguimos montar
+uma tabela contendo a natureza de cada uma das partes (requerente,
+requerida/o, interessada/o, *amicus curiae*) e seus respectivos
+representantes.
+
+    #> # A tibble: 22 x 3
+    #>    incidente tipo  nome                                                         
+    #>    <chr>     <chr> <chr>                                                        
+    #>  1 5833114   REQTE PARTIDO SOCIALISMO E LIBERDADE (P-SOL)                       
+    #>  2 5833114   ADV   ANDRE BRANDAO HENRIQUES MAIMONI (29498/DF, 7040/O/MT) E OUTR~
+    #>  3 5833114   INTDO GOVERNADOR DO ESTADO DO RIO DE JANEIRO                       
+    #>  4 5833114   PROC  PROCURADOR-GERAL DO ESTADO DO RIO DE JANEIRO                 
+    #>  5 5833114   INTDO ASSEMBLEIA LEGISLATIVA DO ESTADO DO RIO DE JANEIRO           
+    #>  6 5833114   ADV   SEM REPRESENTAÇÃO NOS AUTOS                                  
+    #>  7 5833114   INTDO SINDICATO DOS SERVIDORES DA CARREIRA SOCIOEDUCATIVA DO ESTAD~
+    #>  8 5833114   ADV   RENATA MAIA SERRA (137788/RJ)                                
+    #>  9 5833114   ADV   NATALIE AFONSO TOLEDO (196254/RJ)                            
+    #> 10 5833114   AM    DEFENSORIA PÚBLICA DO ESTADO DO RIO DE JANEIRO               
+    #> # ... with 12 more rows
+
+### *5. Raspagem dos dados de parte*
+
+Procedimento semelhante é feito para os andamentos. Foi criada a função
+`ler_aba_andamento` que, recebendo o número do incidente, irá buscar o
+arquivo já salvo em disco.
+
+Será lida a data e o nome de cada andamento e montada uma tabela
+estruturada com essas informações, sempre indexidadas com o número do
+incidente:
+
+    #> # A tibble: 36 x 3
+    #>    incidente data       andamento                 
+    #>    <chr>     <date>     <chr>                     
+    #>  1 5833114   2020-09-10 Publicação, DJE           
+    #>  2 5833114   2020-09-09 Conclusos ao(à) Relator(a)
+    #>  3 5833114   2020-09-09 Certidão                  
+    #>  4 5833114   2020-09-09 Deferido                  
+    #>  5 5833114   2020-08-26 Petição                   
+    #>  6 5833114   2020-07-28 Publicação, DJE           
+    #>  7 5833114   2020-07-24 Conclusos ao(à) Relator(a)
+    #>  8 5833114   2020-07-24 Certidão                  
+    #>  9 5833114   2020-07-24 Deferido                  
+    #> 10 5833114   2020-07-17 Conclusos ao(à) Relator(a)
+    #> # ... with 26 more rows
+
+### *6. Localizar a “pasta virtual” do caso*
+
+Há uma aba específica com as peças processuais disponíveis ao público.
+Ela leva a uma outra página, como vimos, acima, onde os documentos
+listados se encontram.
+
+O formato dessa página é bem mais complexo que as demais, porém
+felizmente ela também é acessível por meio do incidente.
+
+Ela possui um painel de navegação contendo links para todos os
+documentos que, ao clicar, fazem com que seja aberto na página ao lado.
+
+### *7. Identificar a petição inicial*
+
+Uma vez aberta a pasta virtual podemos extrair todos os documentos
+disponíveis por lá. Contudo, para esse projeto definimos extrair somente
+a petição inicial que é a peça processual que define o objeto da causa.
+
+Como o nome já diz, ela que inicia o processo e, portanto, é esperado
+que seja um dos primeiros documentos linkados. Verificamos no código
+fonte que todos os links de documentos continham texto explicativo do
+que se tratava e todos fazem referência a uma função javascript (que
+deve ter relação com a visualização do documento).
+
+Assim, foi necessário localizar os hyperlinks e, dentre esses, os que
+fazem menção expressa a “petição inicial”. Por segurança, caso nenhum
+documento seja localizado, iremos buscar o primeiro documento listado.
+
+Localizado o link, capturamos a que página ele se redireciona e, assim,
+obtemos o link para a petição em si.
+
+### *8. Dowload e leitura da petição inicial*
+
+Foi criada a função `baixar_pet_inicial` que, recebendo o número do
+incidente, faz as etapas descritas acima e salva em disco o arquivo
+.pdf.
+
+![](img/pdfs-baixados.png)
+
+Da mesma maneira, a função `ler_pdf_inicial`busca a petição já baixada
+relativa ao incidente indicado e faz a leitura da mesma, retornando uma
+string com seu conteúdo.
+
+    #> Joining, by = "word"
+    #> # A tibble: 1 x 2
+    #>   incidente texto_inicial                                                       
+    #>   <chr>     <chr>                                                               
+    #> 1 5833114   Assinado de forma digital ANDRE BRANDAO por ANDRE BRANDAO HENRIQUES~
+
+## Produtos da raspagem
 
 ## algumas análises feitas
 
