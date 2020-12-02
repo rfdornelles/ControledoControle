@@ -1,26 +1,37 @@
+##### Monitor do Controle Concentrado no STF  ######
+### Rodrigo Dornelles
+### dezembro/2020
+
 library(magrittr)
 
-lista_arquivos <- fs::dir_info(path = "data-raw/petinicial/") %>%
-  dplyr::pull(path)
+## Criar função que lê a inicial já baixada e depois funções para olharmos
+# as palavras chave de cada petição
 
+ler_pdf_inicial <-  function (incidente, dormir = 1, prog) {
 
-# pdf_lido <-
+# barra de progresso, se houver
+  if (!missing(prog)) {
+    prog()
+  }
 
-lista_arquivos[1:2,] %>%
-  dplyr::mutate(
-    pdf = purrr::map_dfr(.x = value, .f = pdftools::pdf_text)
-  )
+# criar o caminho do arquivo
 
-## função pra ler o pdf
+caminho_pet <- paste0("data-raw/petinicial/PetInicial-", incidente, ".pdf")
 
+  if(!file.exists(caminho_pet)) {
+    return()
+  }
 
-ler_pdf_inicial <- function (caminho) {
+# sleep para não causar
+Sys.sleep(dormir)
 
-  pdf_lido <- pdftools::pdf_text(caminho)
+  pdf_lido <- pdftools::pdf_text(caminho_pet)
 
-  pdf_lido %>%
+  pdf_lido <- pdf_lido %>%
     stringr::str_c(collapse = "") %>%
-    stringr::str_squish() %>%
-    stringr::str_remove_all(stopwords::stopwords(language = "pt"))
+    stringr::str_squish()
 
 }
+
+#### procurar palavras-chave
+# referência: https://www.ufrgs.br/wiki-r/index.php?title=Frequ%C3%AAncia_das_palavras_e_nuvem_de_palavras
