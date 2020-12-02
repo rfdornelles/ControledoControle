@@ -61,7 +61,8 @@ url_pecas <- "http://redir.stf.jus.br/estfvisualizadorpub/jsp/consultarprocessoe
 # baixar petição inicial propriamente dita
 
   httr::GET(url = link_petinicial,
-            httr::write_disk(caminho_pet, overwrite = T))
+            httr::write_disk(caminho_pet, overwrite = T),
+            httr::progress())
 
 }
 
