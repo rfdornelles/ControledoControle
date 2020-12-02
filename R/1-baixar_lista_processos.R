@@ -109,14 +109,15 @@ base_distribuidos <- base_distribuidos %>%
   dplyr::rename("autuacao" = data_autuacao,
                 "distribuicao" = data_primeira_distribuicao,
                 "polo_ativo" = partes_polos_ativos,
-                "polo_passivo" = partes_polos_passivos)
+                "polo_passivo" = partes_polos_passivos,
+                "tramitando" = indicador_de_processo_em_tramitacao)
 
 # continuar a limpeza das colunas tirando as colunas inúteis e
 # fazer a separação da data e dos assuntos
 # Isso tornará mais fácil a manipulação
 
 base_distribuidos <- base_distribuidos %>%
-  dplyr::select(-link_processo, -orgao_origem, -indicador_de_processo_em_tramitacao,
+  dplyr::select(-link_processo, -orgao_origem,
                 -meio_processo, -data_do_ultimo_andamento,
                 -ultimo_andamento) %>%
   dplyr::mutate(ano = lubridate::year(autuacao),
