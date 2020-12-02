@@ -1,33 +1,43 @@
-# library(tidyverse)
+##### Monitor do Controle Concentrado no STF  ######
+### Rodrigo Dornelles
+### dezembro/2020
+
 library(magrittr)
 
-base_incidentes <- readr::read_rds("data/base_incidentes.rds")
+# criar a pasta
+fs::dir_create("data-raw/petinicial/")
+
+
+## Função para baixar a petição inicial - um arquivo em PDF - para cada
+# incidente
 
 baixar_pet_inicial <- function (incidente, dormir = 1, naMarra = F, prog) {
 
-  # barra de progresso
-  if (!missing(prog)) prog()
+# barra de progresso, se houver
+if (!missing(prog)) {
+    prog()
+}
 
-  # caminho do arquivo
+# criar o caminho do arquivo e já pular se existir
 
-  caminho_pet <- paste0("data-raw/petinicial/", incidente, ".pdf")
+caminho_pet <- paste0("data-raw/petinicial/PetInicial-", incidente, ".pdf")
 
   if(file.exists(caminho_pet) & naMarra == F) {
-    return(NULL)
+    return()
   }
 
-  # sleep para não causar
+# sleep para não causar
   Sys.sleep(dormir)
 
-  # preparar a querry
+# preparar a querry
 
-  query_pecas <- list("seqobjetoincidente" = incidente)
+ query_pecas <- list("seqobjetoincidente" = incidente)
 
-  # url do visualizador
+# url do visualizador de documentos do STF
 
-  url_pecas <- "http://redir.stf.jus.br/estfvisualizadorpub/jsp/consultarprocessoeletronico/ConsultarProcessoEletronico.jsf"
+url_pecas <- "http://redir.stf.jus.br/estfvisualizadorpub/jsp/consultarprocessoeletronico/ConsultarProcessoEletronico.jsf"
 
-  # fazer a busca pelo link da inicial
+# fazer a busca pelo link da inicial
 
   link_petinicial <- httr::GET(url = url_pecas,
                                query = query_pecas) %>%
@@ -35,7 +45,7 @@ baixar_pet_inicial <- function (incidente, dormir = 1, naMarra = F, prog) {
     xml2::xml_find_first("//a[contains(text(), 'nicial')]") %>%
     xml2::xml_attr("href")
 
-  # em caso de erro, pegar o primeiro item
+# em caso de erro, pegar o primeiro item
 
   if(is.na(link_petinicial)) {
 
@@ -45,46 +55,14 @@ baixar_pet_inicial <- function (incidente, dormir = 1, naMarra = F, prog) {
       xml2::xml_find_first("//a[@onclick = 'atribuirLink(this);']") %>%
       xml2::xml_attr("href")
 
-    warning(paste("O incidente", incidente, "retornou erro e buscamos a primeira petição"))
+    message(paste("O incidente", incidente, "retornou erro e buscamos a primeira petição"))
   }
 
-  # baixar petição inicial
+# baixar petição inicial propriamente dita
 
   httr::GET(url = link_petinicial,
-            httr::write_disk(caminho_pet, T))
+            httr::write_disk(caminho_pet, overwrite = T))
 
 }
 
-progressr::handlers(list(
-  progressr::handler_progress(
-    format   = ":spin :current/:total (:message) [:bar] :percent in :elapsed ETA: :eta",
-    width    = 60,
-    complete = "+"
-  ),
-  progressr::handler_beepr(
-    finish   = "wilhelm",
-    update = 10L,
-    initiate = 2L
-  )
-))
 
-progressr::with_progress({
-
-  p <- progressr::progressor(nrow(base_incidentes))
-
-  base_incidentes %>%
-    dplyr::pull(incidente) %>%
-    purrr::walk(., .f = ~{
-      purrr::safely(baixar_pet_inicial)(incidente = .x, prog = p)
-    })
-
-})
-
-
-### checar qualidade
-
-tabela_erros <- fs::dir_info("data-raw/petinicial/") %>%
-  dplyr::filter(size == 0) %>%
-  dplyr::mutate(incidente = stringr::str_extract(path, "[0-9]+")) %>%
-  dplyr::select(incidente) %>%
-  dplyr::left_join(base_incidentes)
