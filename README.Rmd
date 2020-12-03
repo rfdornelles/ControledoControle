@@ -250,12 +250,11 @@ Assim como a anterior, está em um formato em que o número do incidente é repe
 head(readr::read_rds("data/andamentos.rds"))
 ```
 
-| Coluna      | Descrição                                                                                         |
-|-------------|---------------------------------------------------------------------------------------------------|
-| *incidente* | Localizador numérico do processo no sistema interno do STF                                        |
-| *data*      | Data em que ocorreu o andamento |
-| *nome*      | Andamento em si                       |
-
+| Coluna      | Descrição                                                  |
+|-------------|------------------------------------------------------------|
+| *incidente* | Localizador numérico do processo no sistema interno do STF |
+| *data*      | Data em que ocorreu o andamento                            |
+| *nome*      | Andamento em si                                            |
 
 ### *d) Base de andamentos*
 
@@ -270,10 +269,10 @@ Por ser um texto extenso, é a única que está compactada. Ela também foi pré
 readr::read_rds("data/peticoes.rds")[21:26,]
 ```
 
-| Coluna      | Descrição                                                                                         |
-|-------------|---------------------------------------------------------------------------------------------------|
-| *incidente* | Localizador numérico do processo no sistema interno do STF                                        |
-| *texto_inicial*      | String colapsada contendo todo o teor da petição inicial |
+| Coluna           | Descrição                                                  |
+|------------------|------------------------------------------------------------|
+| *incidente*      | Localizador numérico do processo no sistema interno do STF |
+| *texto\_inicial* | String colapsada contendo todo o teor da petição inicial   |
 
 ### *e) Base de palavras-chave*
 
@@ -286,17 +285,65 @@ Não extraída diretamente do STF, mas decorrente de um pré-processamento do te
 readr::read_rds("data/palavras-chave.rds")[21:26,]
 ```
 
-| Coluna      | Descrição                                                                                         |
-|-------------|---------------------------------------------------------------------------------------------------|
-| *incidente* | Localizador numérico do processo no sistema interno do STF                                        |
-| *palavra*      | Lista das 10 palavras mais frequentes no documento |
+| Coluna      | Descrição                                                  |
+|-------------|------------------------------------------------------------|
+| *incidente* | Localizador numérico do processo no sistema interno do STF |
+| *palavra*   | Lista das 10 palavras mais frequentes no documento         |
 
-## algumas análises feitas
+# Algumas Análises
 
-## próximos passos
+Sem qualquer pretensão de esgotar o tema, faremos aqui algumas poucas análises exploratórias apenas para ilustrar o potencial do tema.
+
+```{r chama-analises, message=FALSE, warning=FALSE, include=FALSE}
+source("R/8-analises.R", encoding = "UTF-8")
+
+```
+
+
+```{r grafico_distribuicao_acoes}
+
+grafico_distribuicao_acoes
+```
+
+```{r grafico_acoes_classe}
+
+grafico_acoes_classe
+```
+
+```{r grafico_partes_categorizadas}
+
+grafico_partes_categorizadas
+```
+
+
+```{r grafico_quem_covid}
+
+grafico_quem_covid
+```
+
+```{r grafico_evolucao_acoes_covid}
+
+grafico_evolucao_acoes_covid
+```
+
+
+
+## Próximos passos
+
+O presente projeto, mais do que concluir e aplicar as ótimas lições recebidas, pretende ser o pontapé de mais análises no campo da jurimetria e no web scrap.
+
+Espera-se os feedbacks para ajudar na evolução do projeto, que serão incorporados nas medidas da possibilidade do aprendiz-autor.
 
 ### sugestões de análises
 
-### sugestões de pacote a ser feito
+### Idéias a serem implementadas
 
-painel de análise das ações de controle concentrado assuntos mais frequentes autores rodar no git hub actions
+-   Correção de bugs e incorporação dos feedbacks mais simples
+
+-   Transformar em pacote
+
+-   Construir painéis de monitoramento das ações mais recentes
+
+-   Automatizar análises com GitHub Actions
+
+-   Aplicar modelos de tópicos

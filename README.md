@@ -432,13 +432,67 @@ modelagem de texto. Ainda está sujeita a *muitas* melhorias.
 | *incidente* | Localizador numérico do processo no sistema interno do STF |
 | *palavra*   | Lista das 10 palavras mais frequentes no documento         |
 
-## algumas análises feitas
+# Algumas Análises
 
-## próximos passos
+Sem qualquer pretensão de esgotar o tema, faremos aqui algumas poucas
+análises exploratórias apenas para ilustrar o potencial do tema.
+
+``` r
+
+grafico_distribuicao_acoes
+#> Warning: Removed 1 row(s) containing missing values (geom_path).
+```
+
+![](README_files/figure-gfm/grafico_distribuicao_acoes-1.png)<!-- -->
+
+``` r
+
+grafico_acoes_classe
+#> Warning: Removed 13 rows containing non-finite values (stat_count).
+```
+
+![](README_files/figure-gfm/grafico_acoes_classe-1.png)<!-- -->
+
+``` r
+
+grafico_partes_categorizadas
+```
+
+![](README_files/figure-gfm/grafico_partes_categorizadas-1.png)<!-- -->
+
+``` r
+
+grafico_quem_covid
+```
+
+![](README_files/figure-gfm/grafico_quem_covid-1.png)<!-- -->
+
+``` r
+
+grafico_evolucao_acoes_covid
+```
+
+![](README_files/figure-gfm/grafico_evolucao_acoes_covid-1.png)<!-- -->
+
+## Próximos passos
+
+O presente projeto, mais do que concluir e aplicar as ótimas lições
+recebidas, pretende ser o pontapé de mais análises no campo da
+jurimetria e no web scrap.
+
+Espera-se os feedbacks para ajudar na evolução do projeto, que serão
+incorporados nas medidas da possibilidade do aprendiz-autor.
 
 ### sugestões de análises
 
-### sugestões de pacote a ser feito
+### Idéias a serem implementadas
 
-painel de análise das ações de controle concentrado assuntos mais
-frequentes autores rodar no git hub actions
+  - Correção de bugs e incorporação dos feedbacks mais simples
+
+  - Transformar em pacote
+
+  - Construir painéis de monitoramento das ações mais recentes
+
+  - Automatizar análises com GitHub Actions
+
+  - Aplicar modelos de tópicos
