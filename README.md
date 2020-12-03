@@ -23,14 +23,11 @@ classes processuais relativas a:
 
   - [Ação Direta de Inconstitucionalidade
     (ADI)](https://pt.wikipedia.org/wiki/A%C3%A7%C3%A3o_direta_de_inconstitucionalidade),
-
   - [Ação Declaratória de Constitucionalidade
     (ADC)](https://pt.wikipedia.org/wiki/A%C3%A7%C3%A3o_declarat%C3%B3ria_de_constitucionalidade),
-
   - [Ação Declaratória de Inconstitucionalidade por Omissão
     (ADO)](https://pt.wikipedia.org/wiki/A%C3%A7%C3%A3o_direta_de_inconstitucionalidade_por_omiss%C3%A3o)
     e
-
   - [Arguição de Descumprimento de Preceito Fundamental
     (ADPF)](https://pt.wikipedia.org/wiki/Argui%C3%A7%C3%A3o_de_descumprimento_de_preceito_fundamental).
 
@@ -437,42 +434,79 @@ modelagem de texto. Ainda está sujeita a *muitas* melhorias.
 Sem qualquer pretensão de esgotar o tema, faremos aqui algumas poucas
 análises exploratórias apenas para ilustrar o potencial do tema.
 
-``` r
-
-grafico_distribuicao_acoes
-#> Warning: Removed 1 row(s) containing missing values (geom_path).
-```
-
 ![](README_files/figure-gfm/grafico_distribuicao_acoes-1.png)<!-- -->
-
-``` r
-
-grafico_acoes_classe
-#> Warning: Removed 13 rows containing non-finite values (stat_count).
-```
 
 ![](README_files/figure-gfm/grafico_acoes_classe-1.png)<!-- -->
 
-``` r
-
-grafico_partes_categorizadas
-```
-
 ![](README_files/figure-gfm/grafico_partes_categorizadas-1.png)<!-- -->
-
-``` r
-
-grafico_quem_covid
-```
 
 ![](README_files/figure-gfm/grafico_quem_covid-1.png)<!-- -->
 
-``` r
-
-grafico_evolucao_acoes_covid
-```
-
 ![](README_files/figure-gfm/grafico_evolucao_acoes_covid-1.png)<!-- -->
+
+<table>
+
+<thead>
+
+<tr>
+
+<th style="text-align:left;">
+
+corona
+
+</th>
+
+<th style="text-align:left;">
+
+sintese
+
+</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td style="text-align:left;">
+
+FALSE
+
+</td>
+
+<td style="text-align:left;">
+
+constituicao, estado, republica, publico, procurador, ministerio,
+direito, n, nacional, geral, tribunal, df, constitucional, sobre,
+ambiente, artigo, meio, resolucao, sao, direitos
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+TRUE
+
+</td>
+
+<td style="text-align:left;">
+
+estado, saude, constituicao, direito, covid, medida, sobre, publico,
+republica, df, inconstitucionalidade, direitos, uniao, brasilia,
+ministerio, n, sao, brasil, constitucional, publicos
+
+</td>
+
+</tr>
+
+</tbody>
+
+</table>
 
 ## Próximos passos
 
@@ -483,16 +517,10 @@ jurimetria e no web scrap.
 Espera-se os feedbacks para ajudar na evolução do projeto, que serão
 incorporados nas medidas da possibilidade do aprendiz-autor.
 
-### sugestões de análises
-
 ### Idéias a serem implementadas
 
   - Correção de bugs e incorporação dos feedbacks mais simples
-
   - Transformar em pacote
-
   - Construir painéis de monitoramento das ações mais recentes
-
   - Automatizar análises com GitHub Actions
-
   - Aplicar modelos de tópicos
