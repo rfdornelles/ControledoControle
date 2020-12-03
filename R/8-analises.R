@@ -116,7 +116,9 @@ grafico_evolucao_acoes_covid <- base_temas %>%
        subtitle = "Proporção entre as ações")
 
 #####
-base_peticoes <- readr::read_rds("data/peticoes.rds")
+base_peticoes <- readr::read_rds("data/palavras-chave.rds")
+
+source("R/5-ler_pdf.R")
 
 base_textos <- base_temas %>%
   filter(ano == 2020) %>%
@@ -124,20 +126,15 @@ base_textos <- base_temas %>%
   select(-nome, -assuntos, -mes, -tramitando, -ano, - relator, -incidente,
          -numero)
 
-
 base_textos %>%
-  select(corona, texto_inicial) %>%
-  filter(corona) %>%
-  str_c(collapse = "")
+  select(-categoria) %>%
+  filter(classe == "ADI" | classe == "ADPF") %>%
+  group_by(corona) %>%
+  summarise(sintese = str_c(palavra, collapse = "")) %>%
+  mutate(sintese = str_remove_all(sintese, "n*(º|ª)|(º|ª)|,")) %>%
+  rowwise() %>%
+  mutate(sintese = retornar_palavras_frequentes(sintese, 20)) %>%
+  kableExtra::kbl()
 
-# REQTE AM
-## principais ações
 
-## resultados
-
-## falou de covid
-
-## temas principais
-
-## quais ministros
 
