@@ -64,6 +64,25 @@ base_partes_categorizada <- base_partes %>%
       TRUE ~ NA_character_
     )) %>% select(-tipo)
 
+# quais partidos
+
+tabela_quais_partidos <- base_partes_categorizada %>%
+  filter(categoria == "Partido Político") %>%
+  mutate(nome = str_to_title(nome)) %>%
+  count(nome, sort = T) %>%
+  head(10) %>%
+  knitr::kable()
+
+# quais OSC
+
+tabela_quais_osc <- base_partes_categorizada %>%
+  filter(categoria == "OSC") %>%
+  mutate(nome = str_to_title(nome)) %>%
+  count(nome, sort = T) %>%
+  head(10) %>%
+  knitr::kable()
+
+
 base_partes_categorizada <- base_partes_categorizada %>%
   left_join(base_referencia) %>%
   filter(!is.na(categoria), ano >= 2016, ano <= 2020)
