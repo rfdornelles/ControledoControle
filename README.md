@@ -434,15 +434,175 @@ modelagem de texto. Ainda está sujeita a *muitas* melhorias.
 Sem qualquer pretensão de esgotar o tema, faremos aqui algumas poucas
 análises exploratórias apenas para ilustrar o potencial do tema.
 
+## Distribuição das ações ao longo dos últimos anos
+
+O primeiro aspecto que podemos observar é quantidade de ações de
+controle concentrado de constitucionalidade ao longo dos anos. Abaixo,
+sem fazer distinção de qual categoria, vamos ver como se deu essa
+distribuição:
+
 ![](README_files/figure-gfm/grafico_distribuicao_acoes-1.png)<!-- -->
+
+Aqui não estamos preocupados com o “saldo” de ações, ou seja, o gráfico
+acima não é afetado pela produtividade do Tribunal mas indica como
+variou a “procura” pela sua tutela constitucional ao longo do período.
+
+E chama muito a atenção a tendência acentuada no aumento ao longo dos
+últimos anos, em especial a partir de 2019. Uma hipótese para esse
+aumento é o cenário de crise institucional presente no país desde a
+eleição do atual Presidente da República.
+
+Como já noticiado, é uma característica de seu governo o excesso de
+Decretos editados, muitas vezes indo além dos limites legais. [Já
+noticiou o
+UOL](https://noticias.uol.com.br/ultimas-noticias/agencia-estado/2019/05/18/30-medidas-do-governo-ja-sao-alvo-de-acoes-no-stf.htm)
+que, antes de terminado o primeiro semestre de 2019, já havia mais de 30
+medidas questionadas no STF. Alguns veículos, [como o
+Estadão](https://politica.estadao.com.br/noticias/geral,sem-articulacao-oposicao-investe-em-acoes-no-stf-contra-bolsonaro,70003019596),
+apontam uma espécie de estratégia da oposição de ir mais frequentemente
+ao Supremo contra atos da Presidência, sobretudo face um estado de
+tensão entre os Poderes.
+
+Outra explicação, agravada pelo contexto acima descrito, é a **pandemia
+de COVID-19** que enfrentamos nesse momento. Veja-se que, mesmo antes de
+encerrado o ano de 2020, esse ano já é recordista em ações
+constitucionais propostas,
+
+## Evolução nas classes processuais
+
+Um outro aspecto interessante é observar quais os instrumentos vêm sendo
+mais utilizados dentre os 4 normalmente disponíveis no âmbito do
+controle de constitucionalidade.
+
+Veremos abaixo a evolução de cada uma das classes ao longo dos últimos
+anos:
 
 ![](README_files/figure-gfm/grafico_acoes_classe-1.png)<!-- -->
 
+Percebe-se, naturalmente, uma prevalência da ADI, que se mantem
+constante, bem como uma baixa utilização da ADC e da ADO, que foram
+melhor regulamentadas ao longo do início dos anos 2000. Chama a atenção,
+contudo, como evoluiu - sobretudo nos últimos anos - a utilização da
+ADPF.
+
+Isso é curioso justamente por ser uma característica dessa ação a
+subsidiariedade. Ou seja, ela deveria ser residual em seu cabimento.
+Algumas hipóteses que podem explicar esse crescimento são uma maior
+criatividade dos proponentes, que vêm se ancorando em teses como a do
+“estado de coisas inconstitucional” a exemplo do utilizado nas ADPFs
+347, 635, 709 e 760.
+
+## Atividade dos proponentes
+
+Sabemos que as ações de controle concentrado possuem um rol estreito de
+legitimados à sua propositura e que é previsto no [artigo 103 da
+Constituição
+Federal](http://www.planalto.gov.br/ccivil_03/constituicao/constituicao.htm#art103).
+Basicamente, são esses:
+
+  - Presidente da República e Governadores,
+  - Poder Legislativo (Câmara dos Deputados, Senado, Assembléias
+    Legislativas e Distrital),
+  - Procuradoria-Geral da República,
+  - Conselho Federal da OAB,
+  - Partidos políticos com representantes no Congresso Nacional,
+  - Confederações sindicais ou entidades de classe de âmbito nacional.
+
+Como se vê, basicamente são membros do Executivo
+(Presidente/Governadores), do Legislativo e o chefe do Ministério
+Público. Ao lado deles, os partidos políticos, a representação da
+Advocacia e alguns poucos representantes da sociedade civil organizada
+(como os sindicatos e as entidades de classe *nacionais*). Há, portanto,
+uma grande primazia de órgãos/autoridades públicas e grandes
+“conglomerados” da sociedade civil que detém essa legitimidade.
+
+Podemos observar, então, como ao longo dos últimos 5 anos tem sido o
+comportamento desses proponentes:
+
 ![](README_files/figure-gfm/grafico_partes_categorizadas-1.png)<!-- -->
+
+Embora quase residual, as organizações da sociedade civil (OSC),
+compreendendo sindicatos, confederações, etc têm tido atuação expressiva
+e de grande importância nos últimos anos. Da mesma forma, os partidos
+políticos têm se mostrado bastante combativos no âmbito do STF.
+
+Veremos algumas dessas entidades que têm litigado pertante o Supremo
+Tribunal Federal.
+
+#### *Quais partidos políticos*
+
+| nome                                   |  n |
+| :------------------------------------- | -: |
+| Rede Sustentabilidade                  | 63 |
+| Partido Socialista Brasileiro - Psb    | 53 |
+| Partido Democratico Trabalhista        | 51 |
+| Partido Dos Trabalhadores              | 43 |
+| Partido Socialismo E Liberdade (P-Sol) | 42 |
+| Solidariedade                          | 21 |
+| Partido Comunista Do Brasil            | 20 |
+| Partido Trabalhista Brasileiro - Ptb   | 12 |
+| Partido Social Liberal                 | 10 |
+| Podemos                                | 10 |
+
+#### *Quais associações, sindicatos, etc*
+
+| nome                                                                                   |  n |
+| :------------------------------------------------------------------------------------- | -: |
+| Associacao Nacional Das Operadoras Celulares - Acel                                    | 22 |
+| Associacao Nacional Dos Servidores Do Ministerio Publico - Ansemp                      | 19 |
+| Confederacao Brasileira De Trabalhadores Policiais Civis - Cobrapol                    | 19 |
+| Confederacao Dos Servidores Publicos Do Brasil - Cspb                                  | 18 |
+| Abrafix - Associacao Brasileira De Concessionarias De Servico Telefonico Fixo Comutado | 15 |
+| Abradee Associacao Brasileira Distrib Energia Eletrica                                 | 14 |
+| Confederacao Nacional Da Industria                                                     | 14 |
+| Associacao Dos Magistrados Brasileiros                                                 | 13 |
+| Confederacao Nacional Do Transporte                                                    | 13 |
+| Associacao Nacional Dos Defensores Publicos - Anadep                                   | 12 |
+
+## O Supremo e a Pandemia
+
+Sabemos que uma das razões que mostram um pico de casos em 2020 são as
+implicações em todos os níveis que a pandemia de COVID-19 nos trouxe.
+
+Dúvidas sobre os limites federativos, questionamento de atos legislatios
+ou executivos, omissão do Governo Federal, etc foram algumas das muitas
+questões levadas à Corte.
+
+Veremos a seguir a proporção de ações que possuem algumaa relação com a
+pandemia em relação aos demais temas ao longo dos meses de janeiro até
+novembro de 2020:
+
+![](README_files/figure-gfm/grafico_evolucao_acoes_covid-1.png)<!-- -->
+
+Vemos que, efetivamente, a partir de março esse foi um dos grandes temas
+que chegaram até a Corte, evidenciando sua importância inclusive no
+âmbito jurídico e político.
+
+Nos meses de maio e julho, inclusive, essas ações relacionadas à
+pandemia foram mais frequentes do que os otros temas reunidos.
+
+### Os legitimados e a COVID
+
+Vamos observar, brevemente, quais foram os legitimados que mais
+trouxeram o tema para a Corte:
 
 ![](README_files/figure-gfm/grafico_quem_covid-1.png)<!-- -->
 
-![](README_files/figure-gfm/grafico_evolucao_acoes_covid-1.png)<!-- -->
+Se relacionando de alguma maneira com a tendência de serem os
+protagonistas em número de ações, também quanto à COVID os partidos e as
+OSC foram recordistas de ações.
+
+### Vocabulário das ações
+
+Por fim, encerrando o projeto, foi feita uma incipiente e exploratória
+análise das palavras mais comuns nas ações relacionadas a COVID e as que
+se dão em outros temas.
+
+Trata-se, muito mais, de um mínimo produto viável para verificar os
+termos mais frequentes com cada tema e, naturalmente, não é possível
+concluir quase nada. Divide-se esse intento com a comunidade na
+esperança de feedbacks e sugestões de como aprimorar essa análise no
+futuro.
 
 <table>
 
