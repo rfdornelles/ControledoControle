@@ -104,7 +104,7 @@ progressr::with_progress({
 
   p <- progressr::progressor(nrow(tabela_peticoes))
 
-  tabela_palavras_chave <- tabela_peticoes[1:10,] %>%
+  tabela_palavras_chave <- tabela_peticoes %>%
     dplyr::mutate(
       palavra = furrr::future_map_chr(.x = texto_inicial,
        .f =  purrr::possibly(
