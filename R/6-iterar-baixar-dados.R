@@ -1,7 +1,7 @@
 ##### Monitor do Controle Concentrado no STF  ######
 ### Rodrigo Dornelles
 ### dezembro/2020
-tictoc::tic()
+
 library(magrittr)
 
 ## Aqui vou chamar e iterar as funções de baixar dados de todos os processos
@@ -129,4 +129,4 @@ progressr::with_progress({
 
 })
 
-tictoc::toc()
+
