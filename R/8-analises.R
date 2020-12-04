@@ -155,5 +155,23 @@ base_textos %>%
   mutate(sintese = retornar_palavras_frequentes(sintese, 20)) %>%
   kableExtra::kbl()
 
+# olhar amicus
+
+base_partes_amicus <- base_partes %>%
+  dplyr::filter(tipo == "AM") %>%
+  dplyr::left_join(base_referencia) %>%
+  dplyr::select(-incidente, -tipo, -autuacao, -distribuicao,
+                -polo_passivo, -polo_ativo, -dia)
+
+
+base_partes_amicus %>%
+  mutate(nome = str_to_upper(nome),
+         nome = abjutils::rm_accent(nome)) %>%
+  count(nome, sort = T) %>% View()
+
+)
+
+
+
 
 
