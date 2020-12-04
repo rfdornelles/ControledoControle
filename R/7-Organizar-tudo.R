@@ -150,5 +150,6 @@ progressr::with_progress({
  # readr::write_rds(tabela_partes, "data/partes.rds")
  # readr::write_rds(tabela_peticoes, "data/peticoes.rds", compress = "xz")
  # readr::write_rds(tabela_palavras_chave, "data/palavras-chave.rds")
- # readr::write_rds(tabela_palavras_chave_nest, "data/palavra-chave-nest.rds")
+ # readr::write_rds(tabela_palavras_chave_nest, "data/palavra-chave-nest.rds",
+ # compress = "xz")
 
