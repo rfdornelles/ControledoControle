@@ -11,7 +11,7 @@ fs::dir_create("data-raw/petinicial/")
 ## Função para baixar a petição inicial - um arquivo em PDF - para cada
 # incidente
 
-baixar_pet_inicial <- function (incidente, dormir = 1, naMarra = F, prog) {
+baixar_pet_inicial <- function (incidente, dormir = 0, naMarra = F, prog) {
 
 # barra de progresso, se houver
 if (!missing(prog)) {
