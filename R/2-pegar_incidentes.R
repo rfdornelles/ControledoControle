@@ -8,7 +8,7 @@
 library(magrittr)
 
 
-stf_busca_incidente <- function (classe, numero, dorme = 1, prog) {
+stf_busca_incidente <- function (classe, numero, dorme = 0, prog) {
 
 # se a barra de progresso for informada, chamar a função
   if (!missing(prog)) {

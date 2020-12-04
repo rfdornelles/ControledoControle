@@ -19,7 +19,7 @@ fs::dir_create("data-raw/andamentos/")
 
 # Já colocada de forma a facilitar a iteração
 
-baixar_dados_processo <- function (incidente, dormir = 1, naMarra = F, prog) {
+baixar_dados_processo <- function (incidente, dormir = 0, naMarra = F, prog) {
 
 # barra de progresso, para quando for iterar
   if (!missing(prog)) {
