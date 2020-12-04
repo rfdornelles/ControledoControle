@@ -37,14 +37,6 @@ caminho_pet <- paste0("data-raw/petinicial/PetInicial-", incidente, ".pdf")
 #### procurar palavras-chave
 # referência: https://www.ufrgs.br/wiki-r/index.php?title=Frequ%C3%AAncia_das_palavras_e_nuvem_de_palavras
 
-# estabelece as stopwords
-palavras_comuns <- c("art", "lei", "stf", "corte", "pgr", "º",
-                     "rj", "min", "ministro", "ministra", "tcm",
-                    "nao", "federal") %>%
-  tibble::tibble("word" = .) %>%
-  dplyr::full_join(., tidytext::get_stopwords("pt"))
-
-
 #### retornar_palavras_frequentes ####
 
 # Função que retorna as X palavras mais frequentes na inicial
@@ -52,22 +44,29 @@ palavras_comuns <- c("art", "lei", "stf", "corte", "pgr", "º",
 # no futuro pode ajudar a fazer modelo de tópicos
 
 retornar_palavras_frequentes <- function(texto, quantidade = 10,
-                                         simplifica = TRUE) {
+                                         simplifica = TRUE, prog) {
+
+  # barra de progresso, se houver
+  if (!missing(prog)) {
+    prog()
+  }
 
   # limpar o texto
 
   texto_limpo <- texto %>%
     stringr::str_to_lower() %>% # Converte para minusculo
     abjutils::rm_accent() %>% # remover acentsos
-    stringr::str_remove_all("[0-9]") %>%
+    stringr::str_remove_all("[0-9]|º|§") %>%
+    stringr::str_remove_all("\\b[a-z]{1,3}\\b") %>%  # palavras com 3 dígitos
+    tm::removePunctuation() %>%
     stringr::str_squish() %>% # Elimina espacos excedentes
     tibble::tibble("texto" = .) # transforma em tbl
 
   # remover stopwords e tokenizar
   texto_limpo <- texto_limpo %>%
     tidytext::unnest_tokens(input = texto, output = "token") %>%
-    dplyr::anti_join(., y = palavras_comuns,
-                     by = c("token" = "word")) %>%
+    dplyr::anti_join(., y = stopwords::stopwords("por") %>%
+                       tibble::tibble("token" = .)) %>%
     dplyr::count(token, sort = T) %>%
     dplyr::slice_head(n = quantidade)
 
