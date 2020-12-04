@@ -54,12 +54,12 @@ retornar_palavras_frequentes <- function(texto, quantidade = 10,
   # limpar o texto
 
   texto_limpo <- texto %>%
+    stringr::str_squish() %>% # Elimina espacos excedentes
     stringr::str_to_lower() %>% # Converte para minusculo
     abjutils::rm_accent() %>% # remover acentsos
     stringr::str_remove_all("[0-9]|º|§") %>%
     stringr::str_remove_all("\\b[a-z]{1,3}\\b") %>%  # palavras com 3 dígitos
     tm::removePunctuation() %>%
-    stringr::str_squish() %>% # Elimina espacos excedentes
     tibble::tibble("texto" = .) # transforma em tbl
 
   # remover stopwords e tokenizar
@@ -67,13 +67,14 @@ retornar_palavras_frequentes <- function(texto, quantidade = 10,
     tidytext::unnest_tokens(input = texto, output = "token") %>%
     dplyr::anti_join(., y = stopwords::stopwords("por") %>%
                        tibble::tibble("token" = .)) %>%
-    dplyr::count(token, sort = T) %>%
-    dplyr::slice_head(n = quantidade)
+    dplyr::count(token, sort = T)
+
 
   # pra facilitar iteração retornar apenas as palavras
   if(simplifica) {
 
     texto_limpo %>%
+      dplyr::slice_head(n = quantidade) %>%
       dplyr::pull(token) %>%
       stringr::str_c(collapse = ", ")
 
