@@ -681,6 +681,17 @@ futuro.
 
 ![](README_files/figure-gfm/tabela_minimo_covid-1.png)<!-- -->
 
+Vemos que nas ações relativas ao COVID-19 aparce, - além de “saúde” -
+termos como **indígenas**, **quilombolas**, **povos**, **dados**,
+**proteçao**, **efeitos**, etc, que podem sugerir que a tutela requerida
+ao Supremo é no sentido de buscar proteção para as consequências do
+contexto, tendo em mente também grupos vulnerabilizados.
+
+De outro lado, nos casos relativos a outros temas, vemos expressões como
+**trabalho**, **Amazônia**, **decreto**, **ambiente**, e **recursos**.
+Provavelmente temas da agenda ambiental, sobre aspectos trabalhistas e
+financeiros foram levados ao Tribunal ao longo desse ano.
+
 É também possível observar como variam as palavras mais usadas conforme
 a categoria do proponente. Foram separadas as palavras mais usadas por
 cada uma delas e plotadas as nuvens abaixo.
@@ -694,6 +705,46 @@ Provavelmente nada muito contundente por enquanto, mas pode ser
 interessante aplicar a esses dados técnicas mais aguçadas de mineração
 de texto.
 
+A título especulativo, destacaria que parece interessante o fato de
+**partidos políticos** terem destacados termos como *saúde*,
+*segurança*, *infraestrutura* e *eleitoral*. Lembrando do falado acima,
+a legitimidade universal sugere que esse grupo leva à Corte temas
+diversos.
+
+De outro lado, as organizações da sociedade civil - nas quais, como
+vimos, se destacam as entidades de classe de servidores públicos - têm
+entre os destaques os termos *competência*, *servidores*, *regime*,
+*cargo*, *concessão*, e outros sugestivos de matéria precipuamente de
+direito administrativo. Estariam essas entidades levando ao STF
+primordialmente temas relativos a direitos e deveres de suas categorias?
+
+A Ordem dos Advogados do Brasil em destaque para termos como
+*advogados*, *princípio*, *pagamento*, *recursos*, *custas*, *valores* e
+*competênci*a, possivelmente relacionados a questões tributárias, de
+processo e exercício da atividade da advocacia.
+
+A PGR traz com frequência termos como *código, normas*, *competência,
+administração*, *cargos* e outras expressões também bastante
+relacionadas ao direito público (embora o termo *civil* também seja
+bastante destacado).
+
+As palavras referentes à Presidência da República são bem pouco
+conclusivas, pois traz expressões como *ADPF, princípio*, *relator*,
+*preceitos*, *expressão* que são muito inerentes à retórica jurídica: ou
+seja, são expressões esperadas em qualquer tipo de ação constitucional,
+sendo difícil dizer a que argumentos de mérito podem estar relacionados.
+Contudo, há destaque grande para as expressões *exercício* e
+*liberdade*. O que poderá significar?
+
+Por fim, as expressões destacadas para Governadores indicam grande
+vínculo a matérias administrativas: *assembleia* e *legislativa* pode
+sugerir que a maior parte das ações digam respeito a normas Estaduais
+(aprovadas pela “Assembleia Legislativa”). Curiosamente, se nota dois
+nomes próprios: Jose e Silva, que provavelmente dizem respeito ao
+jurista [José Afonso da
+Silva](https://pt.wikipedia.org/wiki/Jos%C3%A9_Afonso_da_Silva) - uma
+referência no âmbito do direito constitucional brasileiro.
+
 ## Próximos passos
 
 O presente projeto, mais do que concluir e aplicar as ótimas lições
@@ -705,9 +756,10 @@ incorporados nas medidas da possibilidade do aprendiz-autor.
 
 ### Idéias a serem implementadas
 
-  - Correção de bugs e incorporação dos feedbacks mais simples
+  - Correção de bugs e incorporação dos feedbacks
   - Transformar em pacote
   - Construir painéis de monitoramento das ações mais recentes
   - Automatizar análises com GitHub Actions
-  - Aplicar modelos de tópicos
+  - Aplicar modelos de tópicos e outras técnicas de mineração de texto
+  - Explorar e validar algumas das hipóteses sugeridas aqui
   - etc, etc, etc….
