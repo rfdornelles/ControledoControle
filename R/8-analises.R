@@ -33,7 +33,8 @@ grafico_distribuicao_acoes <- base_simplificada %>%
   theme_classic() +
   labs(x = "Ano", y = "Processos distribuídos",
        title = "Distribuição de ações no STF") +
-  scale_x_binned(n.breaks = 20)
+  scale_x_continuous(limits = c(2000,2020), n.breaks = NULL) +
+  theme(axis.text.x = element_text(angle = 45))
 
 
 ## ver distribuição por classe processual
@@ -45,7 +46,8 @@ grafico_acoes_classe <- base_simplificada %>%
   ylab("Classe processual") +
   labs(title = "Distribuição das ações",
        subtitle = "Controle concentrado ao longo dos anos") +
-  scale_x_binned(limits = c(2000, 2020), n.breaks = 20)
+  scale_x_binned(limits = c(2000, 2020), n.breaks = 20) +
+  theme(axis.text.x = element_text(angle = 45))
 
 
 ##### principais partidos
@@ -95,7 +97,8 @@ grafico_distribuicao_2020_categoria <- base_partes_categorizada %>%
   theme_classic() +
   facet_wrap(~categoria) +
   labs(title = "Distribuição de ações em 2020",
-       subtitle = "Por categoria de proponente", caption = "Até 04/12/2020")
+       subtitle = "Por categoria de proponente", caption = "Até 04/12/2020") +
+  theme(axis.text.x = element_text(angle = 45))
 
 
 ### ver quais partidos são os que mais acionam
@@ -133,7 +136,8 @@ grafico_partes_categorizadas <- base_partes_categorizada %>%
   theme_classic() +
   labs(x = NULL, y = "Ações propostas",
        title = "Evolução da distribuição de ações",
-       subtitle = "Por categoria de proponentes")
+       subtitle = "Por categoria de proponentes") +
+  theme(axis.text.x = element_text(angle = 45))
 
 #######################
 
@@ -167,42 +171,32 @@ grafico_evolucao_acoes_covid <- base_temas %>%
   theme_classic() +
   labs(x = "Mês", y = "Proporção",
        title = "Evolução da quantidade de ações propostas",
-       subtitle = "Proporção entre as ações")
+       subtitle = "Proporção entre ações que tratam do COVID-19 e outros temas")
 
-#####
-base_peticoes <- readr::read_rds("data/palavras-chave.rds")
-
-source("R/5-ler_pdf.R")
-
-base_textos <- base_temas %>%
-  filter(ano == 2020) %>%
-  left_join(base_peticoes) %>%
-  select(-nome, -assuntos, -mes, -tramitando, -ano, - relator, -incidente,
-         -numero)
-
-base_textos %>%
-  select(-categoria) %>%
-  filter(classe == "ADI" | classe == "ADPF") %>%
-  group_by(corona) %>%
-  summarise(sintese = str_c(palavra, collapse = "")) %>%
-  mutate(sintese = str_remove_all(sintese, "n*(º|ª)|(º|ª)|,")) %>%
-  rowwise() %>%
-  mutate(sintese = retornar_palavras_frequentes(sintese, 20)) %>%
-  kableExtra::kbl()
-
-# olhar amicus
-
-base_partes_amicus <- base_partes %>%
-  dplyr::filter(tipo == "AM") %>%
-  dplyr::left_join(base_referencia) %>%
-  dplyr::select(-incidente, -tipo, -autuacao, -distribuicao,
-                -polo_passivo, -polo_ativo, -dia)
-
-
-base_partes_amicus %>%
-  mutate(nome = str_to_upper(nome),
-         nome = abjutils::rm_accent(nome)) %>%
-  count(nome, sort = T) %>% View()
+# #####
+# base_peticoes <- readr::read_rds("data/palavras-chave.rds")
+#
+# source("R/5-ler_pdf.R")
+#
+# base_textos <- base_temas %>%
+#   filter(ano == 2020) %>%
+#   left_join(base_peticoes) %>%
+#   select(-nome, -assuntos, -mes, -tramitando, -ano, - relator, -incidente,
+#          -numero)
+#
+# # olhar amicus
+#
+# base_partes_amicus <- base_partes %>%
+#   dplyr::filter(tipo == "AM") %>%
+#   dplyr::left_join(base_referencia) %>%
+#   dplyr::select(-incidente, -tipo, -autuacao, -distribuicao,
+#                 -polo_passivo, -polo_ativo, -dia)
+#
+#
+# base_partes_amicus %>%
+#   mutate(nome = str_to_upper(nome),
+#          nome = abjutils::rm_accent(nome)) %>%
+#   count(nome, sort = T)
 
 
 
