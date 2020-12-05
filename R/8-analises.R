@@ -33,11 +33,40 @@ grafico_distribuicao_acoes <- base_simplificada %>%
   ggplot(aes(x = ano, y = n)) +
   geom_line(size = 2) +
   theme_classic() +
-  labs(x = "Ano", y = "Processos autuados",
+  labs(x = "Ano", y = "Processos novos autuados",
        title = "Distribuição da autuação de ações no STF",
        caption = "Até 04/12/2020") +
-  scale_x_continuous(limits = c(2000,2020), n.breaks = NULL) +
-  theme(axis.text.x = element_text(angle = 45))
+  scale_x_continuous(breaks = seq(from = 2000, to = 2020, by = 1)) +
+  theme(axis.text.x = element_text(angle = 45)) +
+  geom_hline(yintercept = 228, color = "darkgreen", size = 1) +
+  annotate(y  = 220, x = 2020, label = "Mediana", geom = "text",
+           size = 3) +
+  geom_vline(xintercept = 2000, linetype = "dotted", color = "blue",
+             size = 2) +
+  annotate(x = 2000, y  = 400, label = "FHC", geom = "label", size = 3) +
+  geom_vline(xintercept = 2003, linetype = "dotted", color = "blue",
+             size = 2) +
+  annotate(x = 2003, y  = 400, label = "Lula", geom = "label", size = 3) +
+  geom_vline(xintercept = 2012, linetype = "dotted", color = "blue",
+             size = 2) +
+  annotate(x = 2012, y  = 400, label = "Dilma", geom = "label", size = 3) +
+  geom_vline(xintercept = 2016, linetype = "dotted", color = "blue",
+             size = 2) +
+    annotate(x = 2016, y  = 400, label = "Impeachment\nTemer",
+           geom = "label", size = 3) +
+  geom_vline(xintercept = 2019, linetype = "dotted", color = "orange",
+             size = 2) +
+  annotate(x = 2019, y  = 400, label = "Bolsonaro", geom = "label",
+           size = 3) +
+  annotate(geom = "pointrange", y = 132, ymin = 132, x =2014,
+           xmax = 2014, ymax = 132, color = "blue", size = 0.9, alpha = 0.4) +
+  annotate(x = 2014, y  = 90, label = "V. nmínimo", geom = "text",
+           size = 3) +
+  annotate(geom = "pointrange", y = 459, ymin = 459, x =2020,
+           xmax = 2020, ymax = 459, color = "red", size = 0.9, alpha = 0.4) +
+  annotate(x = 2020.5, y  = 469, label = "V. máximo", geom = "text",
+           size = 3)
+
 
 
 ## ver distribuição por classe processual
@@ -104,7 +133,8 @@ grafico_distribuicao_2020_categoria <- base_partes_categorizada %>%
   labs(title = "Distribuição de ações em 2020",
        subtitle = "Por categoria de proponente", caption = "Até 04/12/2020",
        x = "Mês de autução",
-       y = "Quantidade ações")
+       y = "Quantidade ações") +
+  theme(axis.text.x = element_text(angle = 45))
 
 
 ### ver quais partidos são os que mais acionam
