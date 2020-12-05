@@ -31,8 +31,9 @@ grafico_distribuicao_acoes <- base_simplificada %>%
   ggplot(aes(x = ano, y = n)) +
   geom_line(size = 2) +
   theme_classic() +
-  labs(x = "Ano", y = "Processos distribuídos",
-       title = "Distribuição de ações no STF") +
+  labs(x = "Ano", y = "Processos autuados",
+       title = "Distribuição da autuação de ações no STF",
+       caption = "Até 04/12/2020") +
   scale_x_continuous(limits = c(2000,2020), n.breaks = NULL) +
   theme(axis.text.x = element_text(angle = 45))
 
@@ -45,7 +46,8 @@ grafico_acoes_classe <- base_simplificada %>%
   xlab("Ano") +
   ylab("Classe processual") +
   labs(title = "Distribuição das ações",
-       subtitle = "Controle concentrado ao longo dos anos") +
+       subtitle = "Controle concentrado ao longo dos anos (ações autuadas)",
+       caption = "Até 04/12/2020") +
   scale_x_binned(limits = c(2000, 2020), n.breaks = 20) +
   theme(axis.text.x = element_text(angle = 45))
 
@@ -135,8 +137,9 @@ grafico_partes_categorizadas <- base_partes_categorizada %>%
   geom_bar(position = "dodge") +
   theme_classic() +
   labs(x = NULL, y = "Ações propostas",
-       title = "Evolução da distribuição de ações",
-       subtitle = "Por categoria de proponentes") +
+       title = "Evolução da propositura de ações",
+       subtitle = "Por categoria de proponentes",
+       caption = "Até 04/12/2020") +
   theme(axis.text.x = element_text(angle = 45))
 
 #######################
@@ -161,7 +164,8 @@ grafico_quem_covid <- base_temas %>%
   scale_fill_brewer(palette = "Dark2") +
   labs(x = NULL, y = "Ações propostas",
        title = "Quem propôs as ações relacionadas ao COVID",
-       subtitle = "Agrupado pelas categorias de proponentes")
+       subtitle = "Agrupado pelas categorias de proponentes",
+       caption = "Até 04/12/2020")
 
 grafico_evolucao_acoes_covid <- base_temas %>%
   filter(ano == 2020) %>%
@@ -170,8 +174,9 @@ grafico_evolucao_acoes_covid <- base_temas %>%
   geom_bar(position = "fill") +
   theme_classic() +
   labs(x = "Mês", y = "Proporção",
-       title = "Evolução da quantidade de ações propostas",
-       subtitle = "Proporção entre ações que tratam do COVID-19 e outros temas")
+       title = "Evolução da quantidade de ações autuadas",
+       subtitle = "Proporção entre ações que tratam do COVID-19 e outros temas",
+       caption = "Até 04/12/2020")
 
 # #####
 # base_peticoes <- readr::read_rds("data/palavras-chave.rds")
