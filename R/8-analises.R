@@ -168,15 +168,19 @@ grafico_quem_covid <- base_temas %>%
        caption = "Até 04/12/2020")
 
 grafico_evolucao_acoes_covid <- base_temas %>%
-  filter(ano == 2020) %>%
+  filter(ano == 2020, mes < 12) %>%
   group_by(mes) %>%
   ggplot(aes(x = mes, fill = corona)) +
   geom_bar(position = "fill") +
+  geom_hline(yintercept = 0.5) +
+  scale_x_continuous(n.breaks = 11) +
+  scale_fill_manual(values = c("#e8b835", "#269e5a"),
+                    name = "Tema", labels = c("Outros", "COVID-19")) +
   theme_classic() +
   labs(x = "Mês", y = "Proporção",
        title = "Evolução da quantidade de ações autuadas",
        subtitle = "Proporção entre ações que tratam do COVID-19 e outros temas",
-       caption = "Até 04/12/2020")
+       caption = "Até 30/11/2020")
 
 # #####
 # base_peticoes <- readr::read_rds("data/palavras-chave.rds")
