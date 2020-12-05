@@ -179,6 +179,19 @@ A melhor forma de fazer isso foi simular uma requisição da seguinte
 forma, criando uma função que recebe como parâmetros a classe e o número
 do processo:
 
+``` r
+# url da página
+  u_stf_listar <- "http://portal.stf.jus.br/processos/listarProcessos.asp"
+
+# query que busca classe e numero
+  q_stf_listar <- list("classe" = classe,
+                       "numeroProcesso" = numero)
+
+# requisição
+  r_stf_listar <- httr::GET(u_stf_listar,
+                            query = q_stf_listar)
+```
+
 Realizando essa requisição, sou redirecionado para a página com os dados
 do processo, cujo url conterá o número de incidente. Assim, extraio esse
 número da resposta:
