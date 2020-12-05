@@ -532,7 +532,11 @@ subsidiariedade. Ou seja, ela deveria ser residual em seu cabimento.
 Algumas hipóteses que podem explicar esse crescimento são uma maior
 criatividade dos proponentes, que vêm se ancorando em teses como a do
 “*estado de coisas inconstitucional*” a exemplo do utilizado nas ADPFs
-347, 635, 709 e 760.
+[347](http://portal.stf.jus.br/processos/detalhe.asp?incidente=4783560),
+[635](http://portal.stf.jus.br/processos/detalhe.asp?incidente=5816502),
+[709](http://portal.stf.jus.br/processos/detalhe.asp?incidente=5952986)
+e
+[760](http://portal.stf.jus.br/processos/detalhe.asp?incidente=6049993).
 
 ## Atividade dos proponentes
 
@@ -571,16 +575,16 @@ Vejamos:
 
 ![](README_files/figure-gfm/grafico_distribuicao_2020_categoria-1.png)<!-- -->
 
-Podemos ver que a atuação dos Estados (Governadores) se deu de forma
-mais intensa no início do ano, enquanto a OAB atuou de forma mais
-contundente nos primeiros meses da pandemia.
+Podemos ver que a atuação dos Estados e DF (via **Governadores**) se deu
+de forma mais intensa no início do ano, enquanto a **OAB** atuou de
+forma mais contundente nos primeiros meses da pandemia.
 
-As organizações da sociedade civil e os partidos tiveram atuação intensa
-durante todo o ano, com picos nas fases iniciais da pandemia.
+As organizações da **sociedade civil** e os **partidos** tiveram atuação
+intensa durante todo o ano, com picos nas fases iniciais da pandemia.
 
-A Presidência da República, quando agiu, foi apenas no meio do ano. A
-PGR, por sua vez, teve atuação mais destacada no inicio da pandemia e
-mais recentemente, em novembro.
+A **Presidência** da República, quando agiu, foi apenas no meio do ano.
+A **PGR**, por sua vez, teve atuação mais destacada no inicio da
+pandemia e mais recentemente, em novembro.
 
 #### Atuação da OSC e Partidos
 
@@ -591,7 +595,7 @@ importância nos últimos anos. Da mesma forma, os partidos políticos têm
 se mostrado bastante combativos no âmbito do STF.
 
 Uma nota importante é que, ao contrário dessas associações, os Partidos
-políticos possuem a chamada “legitimidade universal” e, por isso, em
+políticos possuem a chamada “*legitimidade universal*” e, por isso, em
 tese podem apresentar ações em qualquer tema enquanto as OSCs apenas nos
 temas que dizem respeito direto aos seus associados.
 
@@ -601,7 +605,7 @@ Tribunal Federal.
 ##### *Quais partidos políticos*
 
 Abaixo lista de quais partidos mais apresentaram ações. Um grande
-destaque para os Partidos de esquerda.
+destaque para os Partidos tradicionalmente tidos como de esquerda.
 
 | nome                                         |  n |
 | :------------------------------------------- | -: |
@@ -643,9 +647,9 @@ Dúvidas sobre os limites federativos, questionamento de atos legislatios
 ou executivos, omissão do Governo Federal, etc foram algumas das muitas
 questões levadas à Corte.
 
-Veremos a seguir a proporção de ações relativas com a pandemia em
-relação aos demais temas ao longo dos meses de janeiro até o fim de
-novembro de 2020:
+Veremos a seguir a proporção de ações relativas à pandemia em relação
+aos demais temas ao longo dos meses de janeiro até o fim de novembro de
+2020:
 
 ![](README_files/figure-gfm/grafico_evolucao_acoes_covid-1.png)<!-- -->
 
@@ -711,24 +715,24 @@ A título especulativo, destacaria que parece interessante o fato de
 a legitimidade universal sugere que esse grupo leva à Corte temas
 diversos.
 
-De outro lado, as organizações da sociedade civil - nas quais, como
+De outro lado, as **organizações da sociedade civil** - nas quais, como
 vimos, se destacam as entidades de classe de servidores públicos - têm
 entre os destaques os termos *competência*, *servidores*, *regime*,
 *cargo*, *concessão*, e outros sugestivos de matéria precipuamente de
 direito administrativo. Estariam essas entidades levando ao STF
 primordialmente temas relativos a direitos e deveres de suas categorias?
 
-A Ordem dos Advogados do Brasil em destaque para termos como
+A **Ordem dos Advogados do Brasil** em destaque para termos como
 *advogados*, *princípio*, *pagamento*, *recursos*, *custas*, *valores* e
 *competênci*a, possivelmente relacionados a questões tributárias, de
 processo e exercício da atividade da advocacia.
 
-A PGR traz com frequência termos como *código, normas*, *competência,
-administração*, *cargos* e outras expressões também bastante
-relacionadas ao direito público (embora o termo *civil* também seja
-bastante destacado).
+A **PGR** traz com frequência termos como *código, normas*,
+*competência, administração*, *cargos* e outras expressões também
+bastante relacionadas ao direito público (embora o termo *civil* também
+seja bastante destacado).
 
-As palavras referentes à Presidência da República são bem pouco
+As palavras referentes à **Presidência da República** são bem pouco
 conclusivas, pois traz expressões como *ADPF, princípio*, *relator*,
 *preceitos*, *expressão* que são muito inerentes à retórica jurídica: ou
 seja, são expressões esperadas em qualquer tipo de ação constitucional,
@@ -736,7 +740,7 @@ sendo difícil dizer a que argumentos de mérito podem estar relacionados.
 Contudo, há destaque grande para as expressões *exercício* e
 *liberdade*. O que poderá significar?
 
-Por fim, as expressões destacadas para Governadores indicam grande
+Por fim, as expressões destacadas para **Governadores** indicam grande
 vínculo a matérias administrativas: *assembleia* e *legislativa* pode
 sugerir que a maior parte das ações digam respeito a normas Estaduais
 (aprovadas pela “Assembleia Legislativa”). Curiosamente, se nota dois
