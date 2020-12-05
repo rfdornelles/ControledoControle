@@ -316,9 +316,10 @@ string com seu conteúdo.
 ## Produtos da raspagem
 
 Para os fins desse traballho, foram selecionadas todas as ações autuadas
-**entre 2016 e 2020** (até 01/12/2020, mais especificamente). Foram
-salvos dados sobre as ações em si (direto do STF), os respectivos
-números de incidente, as partes, os andamentos, e a petição inicial.
+a partir de 2000 (primeiro ano disponibilizado na listagem do STF) até
+04/12/2020. Foram salvos dados sobre as ações em si (direto do STF), os
+respectivos números de incidente, as partes, os andamentos, e a petição
+inicial.
 
 Na pasta `/data` foram salvos arquivos .rds contendo esses dados. São os
 seguintes:
