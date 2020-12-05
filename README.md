@@ -189,12 +189,12 @@ numa tabela auxiliar, salva em .rds para uso futuro:
     #> # A tibble: 6 x 3
     #>   classe numero incidente
     #>   <chr>   <dbl> <chr>    
-    #> 1 ADC        53 5436051  
-    #> 2 ADC        54 5440576  
-    #> 3 ADC        55 5471945  
-    #> 4 ADC        56 5472003  
-    #> 5 ADC        57 5511026  
-    #> 6 ADC        58 5526245
+    #> 1 ADC         9 1948617  
+    #> 2 ADC        10 2221383  
+    #> 3 ADC        11 2338671  
+    #> 4 ADC        12 2358461  
+    #> 5 ADC        13 2383568  
+    #> 6 ADC        14 2415705
 
 ### *3. Obtenção dos dados do processo*
 
@@ -308,7 +308,6 @@ Da mesma maneira, a função `ler_pdf_inicial`busca a petição já baixada
 relativa ao incidente indicado e faz a leitura da mesma, retornando uma
 string com seu conteúdo.
 
-    #> Joining, by = "word"
     #> # A tibble: 1 x 2
     #>   incidente texto_inicial                                                       
     #>   <chr>     <chr>                                                               
@@ -332,12 +331,12 @@ seguintes:
     #> # A tibble: 6 x 3
     #>   classe numero incidente
     #>   <chr>   <dbl> <chr>    
-    #> 1 ADC        53 5436051  
-    #> 2 ADC        54 5440576  
-    #> 3 ADC        55 5471945  
-    #> 4 ADC        56 5472003  
-    #> 5 ADC        57 5511026  
-    #> 6 ADC        58 5526245
+    #> 1 ADC         9 1948617  
+    #> 2 ADC        10 2221383  
+    #> 3 ADC        11 2338671  
+    #> 4 ADC        12 2358461  
+    #> 5 ADC        13 2383568  
+    #> 6 ADC        14 2415705
 
 | Coluna      | Descrição                                                  |
 | ----------- | ---------------------------------------------------------- |
@@ -354,14 +353,14 @@ linha. A ideia é que seja possível filtrar, agrupar, pivotar e realizar
 join de acordo com a necessidade de cada análise.
 
     #> # A tibble: 6 x 3
-    #>   incidente tipo  nome                                                    
-    #>   <chr>     <chr> <chr>                                                   
-    #> 1 5436051   REQTE DIRETÓRIO NACIONAL DO PROGRESSISTAS-PP                  
-    #> 2 5436051   ADV   LISE REIS BATISTA DE ALBUQUERQUE (25998/DF) E OUTRO(A/S)
-    #> 3 5436051   INTDO PRESIDENTE DA REPÚBLICA                                 
-    #> 4 5436051   PROC  ADVOGADO-GERAL DA UNIÃO                                 
-    #> 5 5436051   INTDO CONGRESSO NACIONAL                                      
-    #> 6 5436051   PROC  ADVOGADO-GERAL DA UNIÃO
+    #>   incidente tipo  nome                                
+    #>   <chr>     <chr> <chr>                               
+    #> 1 1948617   REQTE PRESIDENTE DA REPÚBLICA             
+    #> 2 1948617   ADV   ADVOGADO-GERAL DA UNIÃO             
+    #> 3 2221383   REQTE DINETE LESSA                        
+    #> 4 2221383   ADV   ADRIANO FERNANDES                   
+    #> 5 2338671   REQTE GOVERNADOR DO DISTRITO FEDERAL      
+    #> 6 2338671   ADV   PROCURADOR-GERAL DO DISTRITO FEDERAL
 
 | Coluna      | Descrição                                                                                         |
 | ----------- | ------------------------------------------------------------------------------------------------- |
@@ -378,14 +377,14 @@ repetido para cada linha. A ideia é que seja possível filtrar, agrupar,
 pivotar e realizar join de acordo com a necessidade de cada análise.
 
     #> # A tibble: 6 x 3
-    #>   incidente data       andamento                       
-    #>   <chr>     <date>     <chr>                           
-    #> 1 5436051   2018-09-11 Baixa ao arquivo do STF, Guia nº
-    #> 2 5436051   2018-09-11 Transitado(a) em julgado        
-    #> 3 5436051   2018-08-14 Publicação, DJE                 
-    #> 4 5436051   2018-08-10 Extinto o processo              
-    #> 5 5436051   2018-04-12 Conclusos ao(à) Relator(a)      
-    #> 6 5436051   2018-04-12 Distribuído
+    #>   incidente data       andamento                                                
+    #>   <chr>     <date>     <chr>                                                    
+    #> 1 1948617   2004-09-03 BAIXA AO ARQUIVO DO STF                                  
+    #> 2 1948617   2004-09-03 PUBLICADA DECISÃO NO DJ                                  
+    #> 3 1948617   2004-09-03 PUBLICADA DECISÃO NO D.O.U.                              
+    #> 4 1948617   2004-08-31 TRANSITADO EM JULGADO                                    
+    #> 5 1948617   2004-04-26 JUNTADA DE CÓPIA AUTENTICADA DE MANDADO DE INTIMAÇÃO DEV~
+    #> 6 1948617   2004-04-26 JUNTADA DE CÓPIA AUTENTICADA DE MANDADO DE INTIMAÇÃO DEV~
 
 | Coluna      | Descrição                                                  |
 | ----------- | ---------------------------------------------------------- |
@@ -393,9 +392,10 @@ pivotar e realizar join de acordo com a necessidade de cada análise.
 | *data*      | Data em que ocorreu o andamento                            |
 | *nome*      | Andamento em si                                            |
 
-### *d) Base de andamentos*
+### *d) Base de inteiro teor de petições*
 
-Relaciona o inteiro teor das petições para todos os processos da base.
+Relaciona o inteiro teor das petições para todos os processos da base de
+acordo com a leitura que foi possível realizar.
 
 Assim como a anterior, está em um formato em que o número do incidente é
 repetido para cada linha. A ideia é qie seja possível filtrar, agrupar,
@@ -403,17 +403,18 @@ pivotar e realizar join de acordo com a necessidade de cada análise.
 
 Por ser um texto extenso, é a única que está compactada. Ela também foi
 pré-processada com o pacote `{pdftools}` para que fosse colapsada em
-apenas uma única grande string.
+apenas uma única grande string. Caso a petição seja uma imagem (mais
+comum com os processos mais antigos) a leitura não será feita.
 
     #> # A tibble: 6 x 2
     #>   incidente texto_inicial                                                       
     #>   <chr>     <chr>                                                               
-    #> 1 6012085   "SÉRGIO VICTOR ADVOCACIA EXCELENTÍSSIMO SENHOR MINISTRO LUIZ FUX PR~
-    #> 2 6025884   "EXCELENTÍSSIMO(A) SENHOR(A) MINISTRO PRESIDENTE DO SUPREMO TRIBUNA~
-    #> 3 5337403   "EXCELENTÍSSIMA SENHORA MINISTRA PRESIDENTE DO EGRÉGIO SUPREMO TRIB~
-    #> 4 5340474   "EXCELENTÍSSIMA SENHORA MINISTRA CÁRMEN LÚCIA, PRESIDENTE DO SUPREM~
-    #> 5 5341021   ""                                                                  
-    #> 6 5341622   "EXCELENTÍSSIMA SENHORA PRESIDENTE DO EGRÉGIO SUPREMO TRIBUNAL FEDE~
+    #> 1 5902221   "AlessandraJirardi - Advogada EXCELENTÍSSIMO SENHOR DOUTOR MINISTRO~
+    #> 2 5902367   "EXCELENTÍSSIMO SENHOR MINISTRO PRESIDENTE DO SUPREMO TRIBUNAL FEDE~
+    #> 3 5989626   "SÉRGIO VICTOR ADVOCACIA EXCELENTÍSSIMO SENHOR MINISTRO PRESIDENTE ~
+    #> 4 6012085   "SÉRGIO VICTOR ADVOCACIA EXCELENTÍSSIMO SENHOR MINISTRO LUIZ FUX PR~
+    #> 5 6025884   "EXCELENTÍSSIMO(A) SENHOR(A) MINISTRO PRESIDENTE DO SUPREMO TRIBUNA~
+    #> 6 6062188   "EXCELENTÍSSIMO SR. MINISTRO PRESIDENTE DO SUPREMO TRIBUNAL FEDERAL~
 
 | Coluna           | Descrição                                                  |
 | ---------------- | ---------------------------------------------------------- |
@@ -423,28 +424,50 @@ apenas uma única grande string.
 ### *e) Base de palavras-chave*
 
 Não extraída diretamente do STF, mas decorrente de um pré-processamento
-do texto da petição inicial, ela relaciona as 10 palavras mais
-frequentes em cada petição inicial.
+do texto da petição inicial, ela relaciona as palavras mais frequentes
+em cada petição inicial.
 
 É uma primeira experiência para futura aplicação de técnicas de
 modelagem de texto. Ainda está sujeita a *muitas* melhorias e serve, por
 enquanto, apenas enquanto protótipo.
 
+Pode ajudar a identificar o assunto levado à Corte.
+
     #> # A tibble: 6 x 2
-    #> # Rowwise: 
     #>   incidente palavra                                                             
     #>   <chr>     <chr>                                                               
-    #> 1 6012085   "trabalho, periculosidade, cep, adicional, superior, sao, litros, n~
-    #> 2 6025884   "nº, cidadao, constitucional, constituicao, artigo, constitucionali~
-    #> 3 5337403   "transporte, nº, combustiveis, º, estadual, sobre, nacional, uniao,~
-    #> 4 5340474   "procurador, º, anexo, nº, ii, i, cargo, geral, estado, parte"      
-    #> 5 5341021   ""                                                                  
-    #> 6 5341622   "nº, bens, direito, divida, º, ativa, constitucional, ii, fazenda, ~
+    #> 1 5902221   republica, federal, paulo, presidente, policia, constituicao, artig~
+    #> 2 5902367   º, honorarios, valor, federal, conselho, causa, constitucional, faz~
+    #> 3 5989626   nº, contribuicoes, constituicao, º, contribuicao, federal, constitu~
+    #> 4 6012085   trabalho, periculosidade, adicional, nº, superior, litros, º, decis~
+    #> 5 6025884   nº, cidadao, constitucional, constituicao, artigo, constitucionalid~
+    #> 6 6062188   º, trabalho, tempo, horas, jornada, nº, transporte, motorista, desc~
 
 | Coluna      | Descrição                                                  |
 | ----------- | ---------------------------------------------------------- |
 | *incidente* | Localizador numérico do processo no sistema interno do STF |
 | *palavra*   | Lista das 10 palavras mais frequentes no documento         |
+
+### *f) Base de palavras-chave-nest*
+
+Semelhante à anterior, porém em formato de list column. Ou seja, está
+aninhado à cada incidente um `data frame` com a lista das palavras mais
+frequentes e sua respectiva quantidade.
+
+    #> # A tibble: 6 x 2
+    #>   incidente palavra         
+    #>   <chr>     <list>          
+    #> 1 5902221   <tibble [1 x 1]>
+    #> 2 5902367   <tibble [1 x 1]>
+    #> 3 5989626   <tibble [1 x 1]>
+    #> 4 6012085   <tibble [1 x 1]>
+    #> 5 6025884   <tibble [1 x 1]>
+    #> 6 6062188   <tibble [1 x 1]>
+
+| Coluna      | Descrição                                                                          |
+| ----------- | ---------------------------------------------------------------------------------- |
+| *incidente* | Localizador numérico do processo no sistema interno do STF                         |
+| *palavra*   | Data frame contendo duas colunas: `token`(com a palavra) e `n`(com sua quantidade) |
 
 # Algumas Análises
 
@@ -540,44 +563,76 @@ comportamento desses proponentes:
 
 ![](README_files/figure-gfm/grafico_partes_categorizadas-1.png)<!-- -->
 
-Embora quase residual, as organizações da sociedade civil (OSC),
-compreendendo sindicatos, confederações, etc têm tido **atuação
-expressiva** e de grande importância nos últimos anos. Da mesma forma,
-os partidos políticos têm se mostrado bastante combativos no âmbito do
-STF.
+#### *Em 2020: Atuação dos proponentes ao longo do ano*
+
+Pensando no momento peculiar em que vivemos, uma aspecto interessante a
+observar é como se deu a atuação dos proponentes ao longo desse ano.
+Vejamos:
+
+![](README_files/figure-gfm/grafico_distribuicao_2020_categoria-1.png)<!-- -->
+
+Podemos ver que a atuação dos Estados (Governadores) se deu de forma
+mais intensa no início do ano, enquanto a OAB atuou de forma mais
+contundente nos primeiros meses da pandemia.
+
+As organizações da sociedade civil e os partidos tiveram atuação intensa
+durante todo o ano, com picos nas fases iniciais da pandemia.
+
+A Presidência da República, quando agiu, foi apenas no meio do ano. A
+PGR, por sua vez, teve atuação mais destacada no inicio da pandemia e
+mais recentemente, em novembro.
+
+#### Atuação da OSC e Partidos
+
+Embora quase residual em termos de competência para atuação, as
+organizações da sociedade civil (OSC), compreendendo sindicatos,
+confederações, etc têm tido **atuação expressiva** e de grande
+importância nos últimos anos. Da mesma forma, os partidos políticos têm
+se mostrado bastante combativos no âmbito do STF.
+
+Uma nota importante é que, ao contrário dessas associações, os Partidos
+políticos possuem a chamada “legitimidade universal” e, por isso, em
+tese podem apresentar ações em qualquer tema enquanto as OSCs apenas nos
+temas que dizem respeito direto aos seus associados.
 
 Veremos algumas dessas entidades que têm litigado pertante o Supremo
 Tribunal Federal.
 
-#### *Quais partidos políticos*
+##### *Quais partidos políticos*
 
-| nome                                   |  n |
-| :------------------------------------- | -: |
-| Rede Sustentabilidade                  | 63 |
-| Partido Socialista Brasileiro - Psb    | 53 |
-| Partido Democratico Trabalhista        | 51 |
-| Partido Dos Trabalhadores              | 43 |
-| Partido Socialismo E Liberdade (P-Sol) | 42 |
-| Solidariedade                          | 21 |
-| Partido Comunista Do Brasil            | 20 |
-| Partido Trabalhista Brasileiro - Ptb   | 12 |
-| Partido Social Liberal                 | 10 |
-| Podemos                                | 10 |
+Abaixo lista de quais partidos mais apresentaram ações. Um grande
+destaque para os Partidos de esquerda.
 
-#### *Quais associações, sindicatos, etc*
+| nome                                         |  n |
+| :------------------------------------------- | -: |
+| PARTIDO SOCIALISTA BRASILEIRO PSB            | 85 |
+| PARTIDO DEMOCRATICO TRABALHISTA PDT          | 84 |
+| PARTIDO SOCIALISMO E LIBERDADE PSOL          | 84 |
+| PARTIDO SOCIAL LIBERAL PSL                   | 80 |
+| PARTIDO DA SOCIAL DEMOCRACIA BRASILEIRA PSDB | 76 |
+| PARTIDO DOS TRABALHADORES                    | 68 |
+| REDE SUSTENTABILIDADE                        | 64 |
+| PARTIDO DEMOCRATICO TRABALHISTA              | 54 |
+| SOLIDARIEDADE                                | 48 |
+| PARTIDO TRABALHISTA BRASILEIRO PTB           | 40 |
 
-| nome                                                                                   |  n |
-| :------------------------------------------------------------------------------------- | -: |
-| Associacao Nacional Das Operadoras Celulares - Acel                                    | 22 |
-| Associacao Nacional Dos Servidores Do Ministerio Publico - Ansemp                      | 19 |
-| Confederacao Brasileira De Trabalhadores Policiais Civis - Cobrapol                    | 19 |
-| Confederacao Dos Servidores Publicos Do Brasil - Cspb                                  | 18 |
-| Abrafix - Associacao Brasileira De Concessionarias De Servico Telefonico Fixo Comutado | 15 |
-| Abradee Associacao Brasileira Distrib Energia Eletrica                                 | 14 |
-| Confederacao Nacional Da Industria                                                     | 14 |
-| Associacao Dos Magistrados Brasileiros                                                 | 13 |
-| Confederacao Nacional Do Transporte                                                    | 13 |
-| Associacao Nacional Dos Defensores Publicos - Anadep                                   | 12 |
+##### *Quais associações, sindicatos, etc*
+
+Aqui as associações que mais apresentaram ações de controle concentrado
+no STF. Destaque para associações ligadas à carreiras jurídicas.
+
+| nome                                                              |   n |
+| :---------------------------------------------------------------- | --: |
+| ASSOCIACAO DOS MAGISTRADOS BRASILEIROS AMB                        | 104 |
+| CONFEDERACAO NACIONAL DA INDUSTRIA                                |  78 |
+| ASSOCIACAO NACIONAL DOS MEMBROS DO MINISTERIO PUBLICO CONAMP      |  63 |
+| CONFEDERACAO NACIONAL DO COMERCIO DE BENS SERVICOS E TURISMO CNC  |  51 |
+| CONFEDERACAO BRASILEIRA DE TRABALHADORES POLICIAIS CIVIS COBRAPOL |  46 |
+| ASSOCIACAO NACIONAL DAS OPERADORAS CELULARES ACEL                 |  45 |
+| CONFEDERACAO NACIONAL DO COMERCIO CNC                             |  43 |
+| ASSOCIACAO DOS NOTARIOS E REGISTRADORES DO BRASIL ANOREGBR        |  42 |
+| CONFEDERACAO DOS SERVIDORES PUBLICOS DO BRASIL CSPB               |  41 |
+| ASSOCIACAO NACIONAL DOS MAGISTRADOS ESTADUAIS ANAMAGES            |  37 |
 
 ## O Supremo e a Pandemia
 
@@ -588,8 +643,8 @@ Dúvidas sobre os limites federativos, questionamento de atos legislatios
 ou executivos, omissão do Governo Federal, etc foram algumas das muitas
 questões levadas à Corte.
 
-Veremos a seguir a proporção de ações que possuem algumaa relação com a
-pandemia em relação aos demais temas ao longo dos meses de janeiro até
+Veremos a seguir a proporção de ações relativas com a pandemia em
+relação aos demais temas ao longo dos meses de janeiro até o fim de
 novembro de 2020:
 
 ![](README_files/figure-gfm/grafico_evolucao_acoes_covid-1.png)<!-- -->
@@ -624,69 +679,20 @@ concluir quase nada. Divide-se esse intento com a comunidade na
 esperança de feedbacks e sugestões de como aprimorar essa análise no
 futuro.
 
-<table>
+![](README_files/figure-gfm/tabela_minimo_covid-1.png)<!-- -->
 
-<thead>
+É também possível observar como variam as palavras mais usadas conforme
+a categoria do proponente. Foram separadas as palavras mais usadas por
+cada uma delas e plotadas as nuvens abaixo.
 
-<tr>
+Podemos formular algumas hipóteses sobre a atuação de cada um desses
+grupos?
 
-<th style="text-align:left;">
+![](README_files/figure-gfm/nuvem-por-requerente-1.png)<!-- -->![](README_files/figure-gfm/nuvem-por-requerente-2.png)<!-- -->![](README_files/figure-gfm/nuvem-por-requerente-3.png)<!-- -->![](README_files/figure-gfm/nuvem-por-requerente-4.png)<!-- -->![](README_files/figure-gfm/nuvem-por-requerente-5.png)<!-- -->![](README_files/figure-gfm/nuvem-por-requerente-6.png)<!-- -->
 
-corona
-
-</th>
-
-<th style="text-align:left;">
-
-sintese
-
-</th>
-
-</tr>
-
-</thead>
-
-<tbody>
-
-<tr>
-
-<td style="text-align:left;">
-
-FALSE
-
-</td>
-
-<td style="text-align:left;">
-
-constituicao, estado, republica, publico, procurador, ministerio,
-direito, n, nacional, geral, tribunal, df, constitucional, sobre,
-ambiente, artigo, meio, resolucao, sao, direitos
-
-</td>
-
-</tr>
-
-<tr>
-
-<td style="text-align:left;">
-
-TRUE
-
-</td>
-
-<td style="text-align:left;">
-
-estado, saude, constituicao, direito, covid, medida, sobre, publico,
-republica, df, inconstitucionalidade, direitos, uniao, brasilia,
-ministerio, n, sao, brasil, constitucional, publicos
-
-</td>
-
-</tr>
-
-</tbody>
-
-</table>
+Provavelmente nada muito contundente por enquanto, mas pode ser
+interessante aplicar a esses dados técnicas mais aguçadas de mineração
+de texto.
 
 ## Próximos passos
 

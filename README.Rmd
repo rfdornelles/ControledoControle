@@ -259,17 +259,19 @@ head(readr::read_rds("data/andamentos.rds"))
 | *data*      | Data em que ocorreu o andamento                            |
 | *nome*      | Andamento em si                                            |
 
-### *d) Base de andamentos*
+### *d) Base de inteiro teor de petições*
 
-Relaciona o inteiro teor das petições para todos os processos da base.
+Relaciona o inteiro teor das petições para todos os processos da base de acordo com a leitura que foi possível realizar.
 
 Assim como a anterior, está em um formato em que o número do incidente é repetido para cada linha. A ideia é qie seja possível filtrar, agrupar, pivotar e realizar join de acordo com a necessidade de cada análise.
 
-Por ser um texto extenso, é a única que está compactada. Ela também foi pré-processada com o pacote `{pdftools}` para que fosse colapsada em apenas uma única grande string.
+Por ser um texto extenso, é a única que está compactada. Ela também foi pré-processada com o pacote `{pdftools}` para que fosse colapsada em apenas uma única grande string. Caso a petição seja uma imagem (mais comum com os processos mais antigos) a leitura não será feita.
 
 ```{r descreve-peticoes, echo=FALSE}
-
-readr::read_rds("data/peticoes.rds")[21:26,]
+# garantir que não seja linhas em branco
+readr::read_rds("data/peticoes.rds") %>% 
+  dplyr::filter(texto_inicial != "") %>% 
+  tail()
 ```
 
 | Coluna           | Descrição                                                  |
@@ -279,19 +281,41 @@ readr::read_rds("data/peticoes.rds")[21:26,]
 
 ### *e) Base de palavras-chave*
 
-Não extraída diretamente do STF, mas decorrente de um pré-processamento do texto da petição inicial, ela relaciona as 10 palavras mais frequentes em cada petição inicial.
+Não extraída diretamente do STF, mas decorrente de um pré-processamento do texto da petição inicial, ela relaciona as palavras mais frequentes em cada petição inicial.
 
 É uma primeira experiência para futura aplicação de técnicas de modelagem de texto. Ainda está sujeita a *muitas* melhorias e serve, por enquanto, apenas enquanto protótipo.
 
+Pode ajudar a identificar o assunto levado à Corte.
+
 ```{r descreve-palavras-chave, echo=FALSE}
 
-readr::read_rds("data/palavras-chave.rds")[21:26,]
+readr::read_rds("data/palavras-chave.rds") %>% 
+  dplyr::filter(palavra != "") %>% 
+  tail()
+  
 ```
 
 | Coluna      | Descrição                                                  |
 |-------------|------------------------------------------------------------|
 | *incidente* | Localizador numérico do processo no sistema interno do STF |
 | *palavra*   | Lista das 10 palavras mais frequentes no documento         |
+
+### *f) Base de palavras-chave-nest*
+
+Semelhante à anterior, porém em formato de list column. Ou seja, está aninhado à cada incidente um `data frame` com a lista das palavras mais frequentes e sua respectiva quantidade.
+
+```{r descreve-palavras-chave-nest, echo=FALSE}
+
+readr::read_rds("data/palavra-chave-nest.rds") %>% 
+  dplyr::filter(palavra != "") %>% 
+  tail()
+  
+```
+
+| Coluna      | Descrição                                                                          |
+|-------------|------------------------------------------------------------------------------------|
+| *incidente* | Localizador numérico do processo no sistema interno do STF                         |
+| *palavra*   | Data frame contendo duas colunas: `token`(com a palavra) e `n`(com sua quantidade) |
 
 # Algumas Análises
 
@@ -357,18 +381,41 @@ Podemos observar, então, como ao longo dos últimos 5 anos tem sido o comportam
 grafico_partes_categorizadas
 ```
 
-Embora quase residual, as organizações da sociedade civil (OSC), compreendendo sindicatos, confederações, etc têm tido **atuação expressiva** e de grande importância nos últimos anos. Da mesma forma, os partidos políticos têm se mostrado bastante combativos no âmbito do STF.
+#### *Em 2020: Atuação dos proponentes ao longo do ano*
+
+Pensando no momento peculiar em que vivemos, uma aspecto interessante a observar é como se deu a atuação dos proponentes ao longo desse ano. Vejamos:
+
+```{r grafico_distribuicao_2020_categoria, echo=FALSE, message=FALSE, warning=FALSE}
+
+grafico_distribuicao_2020_categoria
+```
+
+Podemos ver que a atuação dos Estados (Governadores) se deu de forma mais intensa no início do ano, enquanto a OAB atuou de forma mais contundente nos primeiros meses da pandemia. 
+
+As organizações da sociedade civil e os partidos tiveram atuação intensa durante todo o ano, com picos nas fases iniciais da pandemia.
+
+A Presidência da República, quando agiu, foi apenas no meio do ano. A PGR, por sua vez, teve atuação mais destacada no inicio da pandemia e mais recentemente, em novembro. 
+
+#### Atuação da OSC e Partidos
+
+Embora quase residual em termos de competência para atuação, as organizações da sociedade civil (OSC), compreendendo sindicatos, confederações, etc têm tido **atuação expressiva** e de grande importância nos últimos anos. Da mesma forma, os partidos políticos têm se mostrado bastante combativos no âmbito do STF.
+
+Uma nota importante é que, ao contrário dessas associações, os Partidos políticos possuem a chamada "legitimidade universal" e, por isso, em tese podem apresentar ações em qualquer tema enquanto as OSCs apenas nos temas que dizem respeito direto aos seus associados.
 
 Veremos algumas dessas entidades que têm litigado pertante o Supremo Tribunal Federal.
 
-#### *Quais partidos políticos*
+##### *Quais partidos políticos*
+
+Abaixo lista de quais partidos mais apresentaram ações. Um grande destaque para os Partidos de esquerda.
 
 ```{r tabela_quais_partidos, echo=FALSE, message=FALSE, warning=FALSE, paged.print=TRUE}
 
 tabela_quais_partidos
 ```
 
-#### *Quais associações, sindicatos, etc*
+##### *Quais associações, sindicatos, etc*
+
+Aqui as associações que mais apresentaram ações de controle concentrado no STF. Destaque para associações ligadas à carreiras jurídicas.
 
 ```{r tabela_quais_osc, echo=FALSE, message=FALSE, warning=FALSE, paged.print=TRUE}
 
@@ -381,7 +428,7 @@ Sabemos que uma das razões que mostram um pico de casos em 2020 são as implica
 
 Dúvidas sobre os limites federativos, questionamento de atos legislatios ou executivos, omissão do Governo Federal, etc foram algumas das muitas questões levadas à Corte.
 
-Veremos a seguir a proporção de ações que possuem algumaa relação com a pandemia em relação aos demais temas ao longo dos meses de janeiro até novembro de 2020:
+Veremos a seguir a proporção de ações relativas com a pandemia em relação aos demais temas ao longo dos meses de janeiro até o fim de novembro de 2020:
 
 ```{r grafico_evolucao_acoes_covid, echo=FALSE, message=FALSE, warning=FALSE}
 
@@ -411,17 +458,43 @@ Trata-se, muito mais, de um mínimo produto viável para verificar os termos mai
 
 ```{r tabela_minimo_covid, echo=FALSE, message=FALSE, warning=FALSE}
 
-base_textos %>% 
-  select(-categoria) %>%
-  filter(classe == "ADI" | classe == "ADPF") %>% 
-  group_by(corona) %>% 
-  summarise(sintese = str_c(palavra, collapse = "")) %>% 
-  mutate(sintese = str_remove_all(sintese, "n*(º|ª)|(º|ª)|,")) %>% 
-  rowwise() %>% 
-  mutate(sintese = retornar_palavras_frequentes(sintese, 20)) %>% 
-  knitr::kable()
+source("R/8-B-wordcloud.R", encoding = "UTF-8")
+
+library(patchwork)
+nuvem_peticoes_corona + nuvem_peticoes_nao + plot_annotation(
+  title = "Nuvem de palavras - Petições iniciais")
 
 ```
+
+
+É também possível observar como variam as palavras mais usadas conforme a categoria do proponente. Foram separadas as palavras mais usadas por cada uma delas e plotadas as nuvens abaixo.
+
+Podemos formular algumas hipóteses sobre a atuação de cada um desses grupos?
+
+```{r nuvem-por-requerente, echo=FALSE, message=FALSE, warning=FALSE}
+
+# wrap_plots(nuvem_partido, nuvem_osc, nuvem_oab, nuvem_pgr,
+#            nuvem_presidente, nuvem_gov) +
+#   plot_annotation(
+#   title = "Nuvem de palavras - Conforme o proponente")
+  
+# (nuvem_partido + nuvem_osc) / (nuvem_oab + nuvem_pgr) / (nuvem_presidente + nuvem_gov) + plot_annotation(
+#    title = "Nuvem de palavras - Conforme o proponente")
+# 
+# (nuvem_partido) / (nuvem_osc) / (nuvem_oab) / (nuvem_pgr) / (nuvem_presidente) / (nuvem_gov) + plot_annotation(
+#    title = "Nuvem de palavras - Conforme o proponente")
+
+nuvem_partido + plot_annotation(
+   title = "Nuvem de palavras - Conforme o proponente")
+nuvem_osc
+nuvem_oab
+nuvem_pgr
+nuvem_presidente
+nuvem_gov
+
+```
+
+Provavelmente nada muito contundente por enquanto, mas pode ser interessante aplicar a esses dados técnicas mais aguçadas de mineração de texto.
 
 ## Próximos passos
 
