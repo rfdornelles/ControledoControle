@@ -3,6 +3,8 @@
 ### dezembro/2020
 
 #### Algumas análises exploratórias ####
+## Os gráficos são gerados e salvos em variávei que serão carregadas no
+# arquivo .Rmd
 
 ### carregar bases
 library(ggplot2)
@@ -96,11 +98,13 @@ grafico_distribuicao_2020_categoria <- base_partes_categorizada %>%
   ggplot(aes(x = autuacao, y = n, color = categoria)) +
   geom_line(size = 1.1, show.legend = F) +
   scale_y_continuous(limits = c(1, 15), n.breaks = 15, name = NULL) +
+  scale_x_datetime(date_labels = "%b", date_breaks = "1 month") +
   theme_classic() +
   facet_wrap(~categoria) +
   labs(title = "Distribuição de ações em 2020",
-       subtitle = "Por categoria de proponente", caption = "Até 04/12/2020") +
-  theme(axis.text.x = element_text(angle = 45))
+       subtitle = "Por categoria de proponente", caption = "Até 04/12/2020",
+       x = "Mês de autução",
+       y = "Quantidade ações")
 
 
 ### ver quais partidos são os que mais acionam
@@ -132,9 +136,9 @@ base_partes_categorizada <- base_partes_categorizada %>%
 grafico_partes_categorizadas <- base_partes_categorizada %>%
   select(classe, categoria, ano, mes, tramitando) %>%
   #group_by(ano) %>%
-  ggplot(aes(x = ano)) +
+  ggplot(aes(x = ano, fill = categoria)) +
   facet_wrap(~categoria) +
-  geom_bar(position = "dodge") +
+  geom_bar(position = "dodge", show.legend = F) +
   theme_classic() +
   labs(x = NULL, y = "Ações propostas",
        title = "Evolução da propositura de ações",
