@@ -1,0 +1,15 @@
+utils::globalVariables(c(
+  "assuntos",
+  "autuacao",
+  "data_autuacao",
+  "data_do_ultimo_andamento",
+  "data_primeira_distribuicao",
+  "indicador_de_processo_em_tramitacao",
+  "link_processo",
+  "meio_processo",
+  "orgao_origem",
+  "partes_polos_ativos",
+  "partes_polos_passivos",
+  "path",
+  "ultimo_andamento"
+))
