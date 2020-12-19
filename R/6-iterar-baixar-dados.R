@@ -55,15 +55,13 @@ source('R/2-pegar_incidentes.R', encoding = 'UTF-8')
 
 if(nrow(base_casos) >= 1) {
 
-  future::plan(future::multisession())
-
-  progressr::with_progress({
+   progressr::with_progress({
 
     p <- progressr::progressor(nrow(base_casos))
 
     novos_incidentes <- base_casos %>%
       dplyr::mutate(incidente =
-                      furrr::future_map2_chr(.x = classe, .y = numero,
+                      purrr::map2_chr(.x = classe, .y = numero,
                                              .f = stf_busca_incidente, prog = p)) %>%
       dplyr::select(classe, numero, incidente)
 
@@ -90,9 +88,6 @@ if(nrow(base_casos) >= 1) {
 
 source(file = "R/3-pegar_dados.R", encoding = "UTF-8")
 
-# preparar paralelo
-future::plan(future::multisession())
-
 # barra de progresso
 progressr::with_progress({
 
@@ -100,7 +95,7 @@ progressr::with_progress({
 
 ### rodar a função pra baixar tudo
 
-  furrr::future_walk(
+  purrr::walk(
     .x =base_incidentes$incidente,
     .f = ~{
       purrr::safely(baixar_dados_processo)(incidente = .x, prog = p)
@@ -110,23 +105,20 @@ progressr::with_progress({
 
 
 #### Baixar petições iniciais #####
-
-# carregar funções
-source(file = "R/4-baixar_peticiao_inicial.R", encoding = "UTF-8")
-
-# preparar paralelo
-future::plan(future::multisession())
-
-# barra de progresso
-
-progressr::with_progress({
-
-  p <- progressr::progressor(nrow(base_incidentes))
-
-  purrr::walk(base_incidentes$incidente, .f = ~{
-    purrr::safely(baixar_pet_inicial)(incidente = .x, prog = p)
-  })
-
-})
+#
+# # carregar funções
+# source(file = "R/4-baixar_peticiao_inicial.R", encoding = "UTF-8")
+#
+# # barra de progresso
+#
+# progressr::with_progress({
+#
+#   p <- progressr::progressor(nrow(base_incidentes))
+#
+#   purrr::walk(base_incidentes$incidente, .f = ~{
+#     purrr::safely(baixar_pet_inicial)(incidente = .x, prog = p)
+#   })
+#
+# })
 
 
