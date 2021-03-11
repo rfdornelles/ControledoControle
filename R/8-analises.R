@@ -31,11 +31,11 @@ base_referencia <- base_simplificada %>%
 grafico_distribuicao_acoes <- base_simplificada %>%
   dplyr::count(ano) %>%
   ggplot(aes(x = ano, y = n)) +
-  geom_line(size = 2) +
+  geom_line(size = 1) +
   theme_classic() +
   labs(x = "Ano", y = "Processos novos autuados",
        title = "Distribuição da autuação de ações no STF",
-       caption = "Até 04/12/2020") +
+       caption = "Até 31/12/2020") +
   scale_x_continuous(breaks = seq(from = 2000, to = 2020, by = 1)) +
   theme(axis.text.x = element_text(angle = 45)) +
   geom_hline(yintercept = 228, color = "darkgreen", size = 1) +
@@ -62,9 +62,9 @@ grafico_distribuicao_acoes <- base_simplificada %>%
            xmax = 2014, ymax = 132, color = "blue", size = 0.9, alpha = 0.4) +
   annotate(x = 2014, y  = 90, label = "V. nmínimo", geom = "text",
            size = 3) +
-  annotate(geom = "pointrange", y = 459, ymin = 459, x =2020,
-           xmax = 2020, ymax = 459, color = "red", size = 0.9, alpha = 0.4) +
-  annotate(x = 2020.5, y  = 469, label = "V. máximo", geom = "text",
+  annotate(geom = "pointrange", y = 503, ymin = 503, x =2020,
+           xmax = 2020, ymax = 503, color = "red", size = 0.9, alpha = 0.4) +
+  annotate(x = 2020.5, y  = 503, label = "V. máximo", geom = "text",
            size = 3)
 
 
@@ -78,7 +78,7 @@ grafico_acoes_classe <- base_simplificada %>%
   ylab("Classe processual") +
   labs(title = "Distribuição das ações",
        subtitle = "Controle concentrado ao longo dos anos (ações autuadas)",
-       caption = "Até 04/12/2020") +
+       caption = "Até 31/12/2020") +
   scale_x_binned(limits = c(2000, 2020), n.breaks = 20) +
   theme(axis.text.x = element_text(angle = 45))
 
@@ -131,7 +131,7 @@ grafico_distribuicao_2020_categoria <- base_partes_categorizada %>%
   theme_classic() +
   facet_wrap(~categoria) +
   labs(title = "Distribuição de ações em 2020",
-       subtitle = "Por categoria de proponente", caption = "Até 04/12/2020",
+       subtitle = "Por categoria de proponente", caption = "Até 31/12/2020",
        x = "Mês de autução",
        y = "Quantidade ações") +
   theme(axis.text.x = element_text(angle = 45))
@@ -173,7 +173,7 @@ grafico_partes_categorizadas <- base_partes_categorizada %>%
   labs(x = NULL, y = "Ações propostas",
        title = "Evolução da propositura de ações",
        subtitle = "Por categoria de proponentes",
-       caption = "Até 04/12/2020") +
+       caption = "Até 31/12/2020") +
   theme(axis.text.x = element_text(angle = 45))
 
 #######################
@@ -199,47 +199,22 @@ grafico_quem_covid <- base_temas %>%
   labs(x = NULL, y = "Ações propostas",
        title = "Quem propôs as ações relacionadas ao COVID",
        subtitle = "Agrupado pelas categorias de proponentes",
-       caption = "Até 04/12/2020")
+       caption = "Até 31/12/2020")
 
 grafico_evolucao_acoes_covid <- base_temas %>%
-  filter(ano == 2020, mes < 12) %>%
+  filter(ano == 2020) %>%
   group_by(mes) %>%
   ggplot(aes(x = mes, fill = corona)) +
   geom_bar(position = "fill") +
   geom_hline(yintercept = 0.5) +
-  scale_x_continuous(n.breaks = 11) +
+  scale_x_continuous(n.breaks = 12) +
   scale_fill_manual(values = c("#e8b835", "#269e5a"),
                     name = "Tema", labels = c("Outros", "COVID-19")) +
   theme_classic() +
   labs(x = "Mês", y = "Proporção",
        title = "Evolução da quantidade de ações autuadas",
        subtitle = "Proporção entre ações que tratam do COVID-19 e outros temas",
-       caption = "Até 30/11/2020")
-
-# #####
-# base_peticoes <- readr::read_rds("data/palavras-chave.rds")
-#
-# source("R/5-ler_pdf.R")
-#
-# base_textos <- base_temas %>%
-#   filter(ano == 2020) %>%
-#   left_join(base_peticoes) %>%
-#   select(-nome, -assuntos, -mes, -tramitando, -ano, - relator, -incidente,
-#          -numero)
-#
-# # olhar amicus
-#
-# base_partes_amicus <- base_partes %>%
-#   dplyr::filter(tipo == "AM") %>%
-#   dplyr::left_join(base_referencia) %>%
-#   dplyr::select(-incidente, -tipo, -autuacao, -distribuicao,
-#                 -polo_passivo, -polo_ativo, -dia)
-#
-#
-# base_partes_amicus %>%
-#   mutate(nome = str_to_upper(nome),
-#          nome = abjutils::rm_accent(nome)) %>%
-#   count(nome, sort = T)
+       caption = "Até 31/12/2020")
 
 
 
