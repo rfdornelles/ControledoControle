@@ -106,7 +106,7 @@ analisa_ato <- function(texto) {
 
 #### testes
 base_partes_categorizada_tipo_ato <- base_partes_categorizada %>%
-  dplyr::select(classe, numero, categoria, ano, mes, legislacao) %>%
+  dplyr::select(classe, numero, categoria, autuacao, ano, mes, legislacao) %>%
   dplyr::mutate(
     esfera = analisa_esfera(legislacao),
     tipo_ato = analisa_ato (legislacao),
@@ -116,13 +116,11 @@ base_partes_categorizada_tipo_ato <- base_partes_categorizada %>%
                               TRUE ~ esfera))
 
 grafico_esfera_ato_questionado <- base_partes_categorizada_tipo_ato %>%
-  # select(classe, categoria, ano, mes) %>%
-  #group_by(ano) %>%
   ggplot(aes(x = ano, fill = esfera)) +
+ # scale_x_datetime(date_labels = "%y", date_breaks = "1 year") +
   facet_wrap(~categoria) +
   geom_bar(position = "fill", show.legend = T) +
   theme_classic() +
- # scale_x_discrete(labels = c("Outros temas", "COVID")) +
   scale_fill_brewer(palette = "Dark2") +
   labs(y = "Proporção", x = "Ano",
        title = "Qual esfera de competência dos atos questionados pelos legitimados",
@@ -153,5 +151,6 @@ grafico_perfil_atos_federais <- base_partes_categorizada_tipo_ato %>%
        caption = "Até 31/12/2020",
        fill = "Tipo de ato") +
   theme_classic() +
-  theme(axis.text.x = element_text(angle = 45))
+  theme(axis.text.x = element_text(angle = 45)) +
+  scale_x_continuous(breaks = seq(from = 2000, to = 2020, by = 1))
 
