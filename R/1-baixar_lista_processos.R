@@ -128,7 +128,8 @@ base_distribuidos <- base_distribuidos %>%
                            "assunto_outros"),
                   sep = "\\|",
                   remove = FALSE,
-                  extra = "merge")
+                  extra = "merge") %>%
+  dplyr::filter(ano < 2021)
 
 # retornar a base para uso em outra função
 base_distribuidos

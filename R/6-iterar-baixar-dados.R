@@ -36,6 +36,7 @@ baixar_tabela_stf()
 
 # ler a tabela, salvando apenas classe e número (o resto não preciso agora)
 base_casos <- ler_tabela_stf() %>%
+  dplyr::filter(ano < 2021) %>%  # acrescentar limite até 2020
   dplyr::select(classe, numero)
 
 ### verificar os incidentes que já tenho e remover os antigos
