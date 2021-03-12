@@ -47,22 +47,22 @@ analisa_esfera <- function(texto) {
     detecta_parametro(texto, "Federal") ~ "Federal",
     detecta_parametro(texto, "Estadual|Distrital") ~ "Estadual",
     detecta_parametro(texto, "Municipal") ~ "Municipal",
-    detecta_parametro(texto, "do Estado d(e|o)") ~ "Estadual",
-    detecta_parametro(texto, "Munic(í|i)pio") ~ "Municipal",
+    detecta_parametro(texto, "do Estado d[eo]") ~ "Estadual",
+    detecta_parametro(texto, "Munic[íi]pio") ~ "Municipal",
     detecta_parametro(texto, "Distrito Federal") ~ "Estadual",
     # olhar se faz referência ao nome dos estados
     stringr::str_detect(texto, lista_estados) ~ "Estadual",
     # olhar se tem uma estrutura parecida com "Município - UF", que indicaria
     # ser municipal
     stringr::str_detect(texto, lista_uf) ~ "Municipal",
-    detecta_parametro(texto, "C(o|ó)digo|Consolida(c|ç)(ã|a)o das Leis") ~ "Federal",
-    detecta_parametro(texto, "Minist(e|é)rio [^p(ú|u)blico]") ~ "Federal",
+    detecta_parametro(texto, "C[oó]digo|Consolida[cç][ãa]o das Leis") ~ "Federal",
+    detecta_parametro(texto, "Minist[eé]rio [^p[úu]blico]") ~ "Federal",
     detecta_parametro(texto, "Ministro|Interministerial") ~ "Federal",
     detecta_parametro(texto, "Decreto-Lei") ~ "Federal",
     detecta_parametro(texto, "Conselho Nacional") ~ "Federal",
-    detecta_parametro(texto, "Lei Complementar|Medida Provis(ó|o)ria") ~ "Federal",
-    detecta_parametro(texto, "presidencial|president(e|a) d.") ~ "Federal",
-    detecta_parametro(texto, "Uni(ã|a)o") ~ "Federal",
+    detecta_parametro(texto, "Lei Complementar|Medida Provis[óo]ria") ~ "Federal",
+    detecta_parametro(texto, "presidencial|president[ea] d.") ~ "Federal",
+    detecta_parametro(texto, "Uni[ãa]o") ~ "Federal",
     TRUE ~ NA_character_) # se não couber em nada, NA
   # sabendo que, obviamente, a maior parte dos atos tende a cair na esfera
   # federal
@@ -85,16 +85,16 @@ analisa_ato <- function(texto) {
     detecta_parametro(texto, "Decreto") ~ "Decreto",
     detecta_parametro(texto, "Código|Estatuto d.") ~ "Lei",
     detecta_parametro(texto, "Emenda Constitucional") ~ "Emenda Constitucional",
-    detecta_parametro(texto, "Constitui(ç|c)(ã|a)o|Constitucion*") ~ "Constituição",
-    detecta_parametro(texto, "Resolu(ç|c)(ã|a)o") ~ "Resolução",
+    detecta_parametro(texto, "Constitui[çc][ãa]o|Constitucion*") ~ "Constituição",
+    detecta_parametro(texto, "Resolu[çc][ãa]o") ~ "Resolução",
     detecta_parametro(texto, "Portaria") ~ "Portaria",
     detecta_parametro(texto, "Medida Provisória") ~ "Medida Provisória",
     detecta_parametro(texto, "Instrução Normativa") ~ "Instrução Normativa",
     detecta_parametro(texto, "Regimento Interno") ~ "Regimento Interno",
     detecta_parametro(texto, "Ato n.") ~ "Ato",
     detecta_parametro(texto, "Provimento n.") ~ "Provimento",
-    detecta_parametro(texto, "(Conven(ç|c)(a|ã)o|Tratado) Internacional") ~ "Convenção Internacional",
-    detecta_parametro(texto, "S(ú|u)mula") ~ "Súmula",
+    detecta_parametro(texto, "(Conven[çc][aã]o|Tratado) Internacional") ~ "Convenção Internacional",
+    detecta_parametro(texto, "S[úu]mula") ~ "Súmula",
     TRUE ~ "Outro"
   )
 
