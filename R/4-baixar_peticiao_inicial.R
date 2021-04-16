@@ -40,7 +40,8 @@ url_pecas <- "http://redir.stf.jus.br/estfvisualizadorpub/jsp/consultarprocessoe
 # fazer a busca pelo link da inicial
 
   link_petinicial <- httr::GET(url = url_pecas,
-                               query = query_pecas) %>%
+                               query = query_pecas,
+                               httr::user_agent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.72 Safari/537.36")) %>%
     xml2::read_html() %>%
     xml2::xml_find_first("//a[contains(text(), 'nicial')]") %>%
     xml2::xml_attr("href")
@@ -50,7 +51,8 @@ url_pecas <- "http://redir.stf.jus.br/estfvisualizadorpub/jsp/consultarprocessoe
   if(is.na(link_petinicial)) {
 
     link_petinicial <- httr::GET(url = url_pecas,
-                                 query = query_pecas) %>%
+                                 query = query_pecas,
+                                 httr::user_agent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.72 Safari/537.36")) %>%
       xml2::read_html() %>%
       xml2::xml_find_first("//a[@onclick = 'atribuirLink(this);']") %>%
       xml2::xml_attr("href")
@@ -62,7 +64,8 @@ url_pecas <- "http://redir.stf.jus.br/estfvisualizadorpub/jsp/consultarprocessoe
 
   httr::GET(url = link_petinicial,
             httr::write_disk(caminho_pet, overwrite = T),
-            httr::progress())
+            httr::progress(),
+            httr::user_agent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.72 Safari/537.36"))
 
 }
 

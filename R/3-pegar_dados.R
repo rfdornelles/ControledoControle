@@ -47,13 +47,15 @@ baixar_dados_processo <- function (incidente, dormir = 0, naMarra = F, prog) {
 
   if(!file.exists(caminho_partes) | naMarra) {
     httr::GET(url = u_partes, query = q_incidente,
-              httr::write_disk(caminho_partes, overwrite = TRUE))
+              httr::write_disk(caminho_partes, overwrite = TRUE),
+              httr::user_agent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.72 Safari/537.36"))
   }
 
 # baixar andamentos se não existir e se não precisar forçar
   if(!file.exists(caminho_andamentos) | naMarra) {
     httr::GET(url = u_andamentos, query = q_incidente,
-              httr::write_disk(caminho_andamentos, overwrite = TRUE))
+              httr::write_disk(caminho_andamentos, overwrite = TRUE),
+              httr::user_agent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.72 Safari/537.36"))
 
   }
 

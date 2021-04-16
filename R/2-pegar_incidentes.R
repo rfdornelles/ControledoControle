@@ -28,7 +28,8 @@ stf_busca_incidente <- function (classe, numero, dorme = 0, prog) {
 
 # requisição. não vou salvar pois não me interessa manter esse arquivo
   r_stf_listar <- httr::GET(u_stf_listar,
-                            query = q_stf_listar)
+                            query = q_stf_listar,
+                            httr::user_agent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.72 Safari/537.36"))
 
 
 # vou buscar na resposta o URL para o qual fui redirecionado, ele conterá
