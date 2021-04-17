@@ -64,7 +64,7 @@ url_pecas <- "http://redir.stf.jus.br/estfvisualizadorpub/jsp/consultarprocessoe
 
   httr::GET(url = link_petinicial,
             httr::write_disk(caminho_pet, overwrite = T),
-            httr::progress(),
+          #  httr::progress(),
             httr::user_agent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.72 Safari/537.36"))
 
 }
