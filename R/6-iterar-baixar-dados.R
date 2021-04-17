@@ -35,9 +35,9 @@ source('R/1-baixar_lista_processos.R', encoding = 'UTF-8')
 baixar_tabela_stf()
 
 # ler a tabela, salvando apenas classe e número (o resto não preciso agora)
-base_casos <- ler_tabela_stf() %>%
-  dplyr::filter(ano < 2021) %>%  # acrescentar limite até 2020
-  dplyr::select(classe, numero)
+base_casos <- ler_tabela_stf() #%>%
+  # dplyr::filter(ano < 2021) %>%  # acrescentar limite até 2020
+  # dplyr::select(classe, numero)
 
 ### verificar os incidentes que já tenho e remover os antigos
 # a ideia é ficar só com os novos
@@ -45,8 +45,10 @@ base_casos <- ler_tabela_stf() %>%
 if(fs::file_exists("data/incidentes.rds")) {
 
   base_casos <- base_casos %>%
-    dplyr::anti_join(readr::read_rds("data/incidentes.rds"))
-}
+    dplyr::anti_join(readr::read_rds("data/incidentes.rds")) %>%
+    dplyr::filter(!is.na(classe))
+
+  }
 
 ### carregar funções pra ler o incidente
 source('R/2-pegar_incidentes.R', encoding = 'UTF-8')
@@ -75,7 +77,7 @@ if(nrow(base_casos) >= 1) {
   base_incidentes <- readr::read_rds("data/incidentes.rds") %>%
     dplyr::bind_rows(novos_incidentes)
 
-  readr::write_rds(base_incidentes, "data/incidentes.rds")
+   readr::write_rds(base_incidentes, "data/incidentes.rds")
 
 } else {
 
